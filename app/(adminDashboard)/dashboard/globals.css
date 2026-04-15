@@ -1,0 +1,31 @@
+@import 'tailwindcss';
+
+/* common styles  */
+
+.card__container {
+  @apply grid grid-cols-4 gap-6
+}
+
+.card__parent {
+  @apply p-4 bg-white  rounded-xl border border-black/10 text-black/70 space-y-5;
+}
+.card__title {
+  @apply text-sm font-semibold;
+}
+
+.card__main__title {
+  @apply text-2xl font-bold;
+}
+
+.card__base__text {
+  @apply text-gray-500 text-xs;
+}
+
+/* nav styles */
+
+.nav__container {
+  @apply py-[1vh] px-[4vh] mt-[4vh] mb-[5vh] rounded-full bg-gray-100 flex justify-between items-center;
+}
+.logo {
+  @apply object-cover w-[5vw] h-auto;
+}
