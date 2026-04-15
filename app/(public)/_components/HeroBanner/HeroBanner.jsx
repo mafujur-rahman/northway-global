@@ -5,7 +5,6 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import BaseBtn from '../utlities/CommonBtn/BaseBtn'
 import { MdArrowOutward } from 'react-icons/md'
-// Added FiGlobe for the plane/globe icon look
 import { FiGlobe } from 'react-icons/fi'
 import {
   FaUserTie,
@@ -94,34 +93,37 @@ export default function HeroBanner() {
 
       {/* Content */}
       <div className='absolute inset-0 z-20 flex flex-col justify-center px-6 md:px-10 xl:px-20'>
-        <div className='max-w-2xl text-left text-white space-y-6'>
-
-          {/* New Simplified Badge Design */}
-          <div className="flex items-center gap-3 w-fit">
-            <div className="bg-[#ff9100] text-white px-6 py-2 rounded-full text-sm md:text-lg font-medium shadow-lg">
-              Study Abroad Made Simplified at Northway Global
-            </div>
-            <div className="">
-              <img
-                src="/plane-icon.png"
-                alt="Plane Icon"
-                className="h-8 md:h-10 w-auto object-contain"
-              />
-            </div>
+        <div className='flex justify-between items-start gap-8'>
+          {/* Left side content */}
+          <div className='max-w-2xl text-left text-white space-y-6 flex-1'>
+            <h1 className='text-4xl md:text-5xl xl:text-7xl font-bold leading-tight'>
+              {bannerData[0].title}{' '}
+              <span className='heading__color__text'>{bannerData[0].color}</span>
+            </h1>
+            <p className='text-base md:text-xl'>{bannerData[0].desc}</p>
+            <BaseBtn
+              text={bannerData[0].btn}
+              link='/contact-us'
+              icon={MdArrowOutward}
+              className='bg-[#ff9100] text-white'
+            />
           </div>
 
-          <h1 className='text-4xl md:text-5xl xl:text-7xl font-bold leading-tight'>
-            {bannerData[0].title}{' '}
-            <span className='heading__color__text'>{bannerData[0].color}</span>
-          </h1>
-          <p className='text-base md:text-xl'>{bannerData[0].desc}</p>
-
-          <BaseBtn
-            text={bannerData[0].btn}
-            link='/contact-us'
-            icon={MdArrowOutward}
-            className='bg-[#ff9100] text-white'
-          />
+          {/* Badge on the right side - aligned with p tag position */}
+          <div className='flex-shrink-0 mt-[120px] md:mt-[140px] xl:mt-[180px]'>
+            <div className='flex items-center gap-3'>
+              <div className='bg-[#ff9100] text-white px-6 py-2 rounded-full text-sm md:text-lg font-medium shadow-lg whitespace-nowrap'>
+                Study Abroad Made Simplified at Northway Global
+              </div>
+              <div>
+                <img
+                  src='/plane-icon.png'
+                  alt='Plane Icon'
+                  className='h-8 md:h-10 w-auto object-contain'
+                />
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Feature Section */}
