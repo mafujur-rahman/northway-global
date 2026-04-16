@@ -93,7 +93,8 @@ export default function HeroBanner() {
 
       {/* Content */}
       <div className='absolute inset-0 z-20 flex flex-col justify-center px-6 md:px-10 xl:px-20'>
-        <div className='flex justify-between items-start gap-8'>
+        {/* Responsive flex: column on mobile, row on desktop */}
+        <div className='flex flex-col lg:flex-row justify-between items-start gap-8'>
           {/* Left side content */}
           <div className='max-w-2xl text-left text-white space-y-6 flex-1'>
             <h1 className='text-4xl md:text-5xl xl:text-7xl font-bold leading-tight'>
@@ -109,13 +110,14 @@ export default function HeroBanner() {
             />
           </div>
 
-          {/* Badge on the right side - aligned with p tag position */}
-          <div className='flex-shrink-0 mt-[120px] md:mt-[140px] xl:mt-[180px]'>
-            <div className='flex items-center gap-3'>
-              <div className='bg-[#ff9100] text-black px-6 py-2 rounded-full text-sm md:text-lg lg:text-xl xl:text-2xl font-medium shadow-lg whitespace-nowrap'>
+          {/* Badge on the right side - responsive with text wrapping */}
+          <div className='flex-shrink-0 w-full lg:w-auto lg:mt-[140px] xl:mt-[180px]'>
+            <div className='flex items-center gap-3 flex-wrap'>
+              <div className='bg-[#ff9100] text-black px-6 py-2 rounded-full text-sm md:text-lg lg:text-xl xl:text-2xl font-medium shadow-lg text-center break-words max-w-full'>
                 Study Abroad Made Simplified at Northway Global
               </div>
-              <div>
+              {/* Plane image - hidden on mobile, visible on tablet and desktop */}
+              <div className='hidden sm:block'>
                 <img
                   src='/plane-icon.png'
                   alt='Plane Icon'

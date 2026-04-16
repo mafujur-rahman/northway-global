@@ -1,46 +1,226 @@
-import Image from 'next/image'
+// app/blogs/[id]/page.js
+'use client';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { FaArrowLeft, FaCalendar, FaUser, FaFilePdf } from 'react-icons/fa';
 
-import { blogs } from '../../_components/fakeDb/blogData'
+export default function BlogDetailsPage({ params }) {
+  const router = useRouter();
+  const [blog, setBlog] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-export default function BlogDetails ({ params }) {
-  const blogId = parseInt(params.id)
-  const blog = blogs.find(b => b.id === blogId)
+  // ✅ CORRECT: Unwrap the params Promise using React.use()
+  const { id } = React.use(params);
 
+  const getAuthToken = () => localStorage.getItem('auth_token');
+
+  useEffect(() => {
+    const fetchBlogDetails = async () => {
+      if (!id) return;
+      
+      setLoading(true);
+      setError(null);
+      
+      try {
+        const token = getAuthToken();
+        console.log('Fetching blog with ID:', id);
+        
+        const response = await axios.get(
+          `https://nortway.mrshakil.com/api/blogs/${id}/`,
+          { 
+            headers: { 
+              'Authorization': `Token ${token}`,
+              'Content-Type': 'application/json'
+            } 
+          }
+        );
+        
+        console.log('API Response:', response.data);
+        
+        // Check different response structures
+        if (response.data.success && response.data.data) {
+          setBlog(response.data.data);
+        } else if (response.data.data && !response.data.success) {
+          setBlog(response.data.data);
+        } else if (response.data.id) {
+          setBlog(response.data);
+        } else {
+          console.error('Unexpected response structure:', response.data);
+          setError('Blog not found');
+        }
+      } catch (err) {
+        console.error('Error fetching blog:', err);
+        console.error('Error response:', err.response?.data);
+        
+        if (err.response?.status === 404) {
+          setError('Blog not found');
+        } else if (err.response?.status === 401) {
+          setError('Authentication failed. Please login again.');
+        } else {
+          setError('Failed to load blog. Please try again.');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchBlogDetails();
+  }, [id]);
+
+  const formatDate = (dateString) => {
+    if (!dateString) return 'Recent';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  };
+
+  // Loading, Error, and UI states remain the same as in your previous working version...
+  if (loading) {
+    return (
+      <div className='section__spacing'>
+        <div className='container mx-auto px-4'>
+          <div className='max-w-4xl mx-auto'>
+            <div className='animate-pulse'>
+              <div className='h-8 bg-gray-200 rounded w-3/4 mb-4'></div>
+              <div className='h-4 bg-gray-200 rounded w-1/2 mb-8'></div>
+              <div className='h-96 bg-gray-200 rounded mb-6'></div>
+              <div className='space-y-3'>
+                <div className='h-4 bg-gray-200 rounded w-full'></div>
+                <div className='h-4 bg-gray-200 rounded w-full'></div>
+                <div className='h-4 bg-gray-200 rounded w-3/4'></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className='section__spacing'>
+        <div className='container mx-auto px-4'>
+          <div className='max-w-4xl mx-auto text-center'>
+            <div className=' rounded-lg shadow-sm p-8'>
+              <div className='text-red-600 text-5xl mb-4'>⚠️</div>
+              <h2 className='text-2xl font-bold text-gray-800 mb-2'>Blog Not Found</h2>
+              <p className='text-gray-600 mb-6'>{error}</p>
+              <button 
+                onClick={() => router.push('/blogs')}
+                className='px-6 py-2 bg-[#ff9100] text-white rounded-lg hover:bg-[#e68200] transition'
+              >
+                Back to Blogs
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!blog) {
-    return <div className='p-10 text-center'>Blog not found</div>
+    return (
+      <div className='min-h-screen bg-gray-50 py-12'>
+        <div className='container mx-auto px-4'>
+          <div className='max-w-4xl mx-auto text-center'>
+            <div className='bg-white rounded-lg shadow-sm p-8'>
+              <div className='text-gray-400 text-5xl mb-4'>📝</div>
+              <h2 className='text-2xl font-bold text-gray-800 mb-2'>No Blog Found</h2>
+              <p className='text-gray-600 mb-6'>The blog post you're looking for doesn't exist.</p>
+              <button 
+                onClick={() => router.push('/blogs')}
+                className='px-6 py-2 bg-[#ff9100] text-white rounded-lg hover:bg-[#e68200] transition'
+              >
+                Browse All Blogs
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className='max-w-5xl mx-auto px-4 md:px-10 lg:px-10 xl:px-20 py-10'>
-      {/* Title */}
-      <h1 className='bl__title'>{blog.title}</h1>
+    <div className='section__spacing'>
+      <div className='container mx-auto px-4'>
+        <div className='max-w-4xl mx-auto'>
+          {/* Back Button */}
+          <button 
+            onClick={() => router.back()}
+            className='flex items-center gap-2 text-gray-600 hover:text-[#ff9100] transition mb-6'
+          >
+            <FaArrowLeft /> Back to Blogs
+          </button>
 
-      {/* Meta */}
-      <div className='flex items-center mb-6 mt-5 xl:mt-10'>
-        <img
-          src={blog.authorImage}
-          alt={blog.authorName}
-          className='w-12 h-12 rounded-full mr-3'
-        />
-        <div>
-          <p className='heading__sub__text'>{blog.authorName}</p>
-          <p className='text__base'>{blog.publishedDate}</p>
+          {/* Blog Header */}
+          <div className='bg-white rounded-xl shadow-sm overflow-hidden'>
+            {blog.thumbnail && (
+              <div className='w-full h-96 relative'>
+                <img 
+                  src={blog.thumbnail} 
+                  alt={blog.title}
+                  className='w-full h-full object-cover'
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                  }}
+                />
+              </div>
+            )}
+            
+            <div className='p-8'>
+              <h1 className='text-3xl md:text-4xl font-bold text-gray-900 mb-4'>
+                {blog.title}
+              </h1>
+              
+              <div className='flex flex-wrap items-center gap-4 mb-6 pb-6 border-b border-gray-200'>
+                <div className='flex items-center gap-2 text-gray-600'>
+                  <FaUser className='text-[#ff9100]' />
+                  <span>{blog.writer || 'Admin'}</span>
+                </div>
+                <div className='flex items-center gap-2 text-gray-600'>
+                  <FaCalendar className='text-[#ff9100]' />
+                  <span>{formatDate(blog.created_at)}</span>
+                </div>
+                {blog.posted_year && (
+                  <div className='flex items-center gap-2 text-gray-600'>
+                    <span>📅</span>
+                    <span>Year: {blog.posted_year}</span>
+                  </div>
+                )}
+                {blog.pdf_file && (
+                  <a 
+                    href={blog.pdf_file} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className='flex items-center gap-2 text-[#ff9100] hover:underline ml-auto'
+                  >
+                    <FaFilePdf /> Download PDF
+                  </a>
+                )}
+              </div>
+
+              {/* Short Summary */}
+              {blog.short_summary && (
+                <div className='bg-gray-50 p-4 rounded-lg mb-6'>
+                  <p className='text-gray-700 italic'>{blog.short_summary}</p>
+                </div>
+              )}
+
+              {/* Main Content */}
+              <div className='prose prose-lg max-w-none'>
+                <p className='text-gray-700 leading-relaxed whitespace-pre-wrap'>
+                  {blog.content}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-      {/* Image */}
-      <Image
-        src={blog.blogImg}
-        alt={blog.title}
-        width={800}
-        height={500}
-        className='rounded-lg mb-6 w-full h-[50vh] object-cover'
-      />
-
-      {/* Content */}
-      <p className='text-lg leading-relaxed mb-6'>{blog.briefDesOne}</p>
-      <p className='text-lg leading-relaxed'>{blog.briefDesTwo}</p>
     </div>
-  )
+  );
 }

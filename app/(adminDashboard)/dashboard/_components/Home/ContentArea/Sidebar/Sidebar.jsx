@@ -45,7 +45,7 @@ export default function Sidebar() {
           <div className="w-8 h-8 bg-[#ff9100] rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-lg">N</span>
           </div>
-          <span className="font-semibold text-gray-900 text-lg">Nortway CMS</span>
+          <span className="font-semibold text-gray-900 text-lg">Nortway Global</span>
         </div>
       </Link>
 

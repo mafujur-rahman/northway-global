@@ -188,7 +188,7 @@ export default function Navbar () {
 
       {/* Mobile Dropdown Menu */}
       {menuOpen && (
-        <ul className='lg:hidden bg-white shadow-lg px-6 py-4 space-y-2 font-medium text-gray-700 pb-16'>
+        <ul className='lg:hidden bg-white shadow-lg px-6 py-4 space-y-2 font-medium text-gray-700 pt-16 pb-16'>
           <div>
             <Link href='/' onClick={() => setMenuOpen(!menuOpen)}>
               <li>Home</li>
