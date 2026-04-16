@@ -1,12 +1,20 @@
-import React from 'react'
-import Banner from './_components/Home/Banner/Banner'
-import MainContent from './_components/Home/ContentArea/MainContent/MainContent'
+import React from 'react';
+import Sidebar from './_components/Home/ContentArea/Sidebar/Sidebar';
+import Topbar from './_components/Home/ContentArea/Topbar/Topbar';
+import ProtectedRoute from './_components/utilities/ProtectedRoute';
 
-export default function page () {
+export default function DashboardLayout({ children }) {
   return (
-    <section>
-      <Banner />
-      <MainContent />
-    </section>
-  )
+    <ProtectedRoute>
+      <div className="min-h-screen bg-gray-50 relative">
+        <Sidebar />
+        <Topbar />
+        <main className="pt-20 pb-6 px-6 ml-64">
+          <div className="w-full">
+            {children}
+          </div>
+        </main>
+      </div>
+    </ProtectedRoute>
+  );
 }
