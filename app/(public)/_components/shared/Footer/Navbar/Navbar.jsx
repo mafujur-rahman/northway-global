@@ -41,40 +41,40 @@ export default function Navbar () {
           <div className='flex justify-end'>
             <div className='flex space-x-4 text-lg text-gray-700 mt-2 md:mt-0'>
               <a
-                href='https://facebook.com'
+                href='https://facebook.com/northwayglobal'
                 target='_blank'
                 rel='noopener noreferrer'
               >
                 <FaFacebookF className='hover:text-[#FF9100]' />
               </a>
               <a
-                href='https://twitter.com'
+                href='https://twitter.com/northwayglobal'
                 target='_blank'
                 rel='noopener noreferrer'
               >
                 <FaTwitter className='hover:text-[#FF9100]' />
               </a>
               <a
-                href='https://linkedin.com'
+                href='https://linkedin.com/northwayglobal'
                 target='_blank'
                 rel='noopener noreferrer'
               >
                 <FaLinkedinIn className='hover:text-[#FF9100]' />
               </a>
               <a
-                href='https://instagram.com'
+                href='https://instagram.com/northwayglobal'
                 target='_blank'
                 rel='noopener noreferrer'
               >
                 <FaInstagram className='hover:text-[#FF9100]' />
               </a>
-              <a
+              {/* <a
                 href='https://youtube.com'
                 target='_blank'
                 rel='noopener noreferrer'
               >
                 <FaYoutube className='hover:text-[#FF9100]' />
-              </a>
+              </a> */}
             </div>
           </div>
         </div>
@@ -304,15 +304,17 @@ export default function Navbar () {
               />
               <select className='w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#FF9100] outline-none'>
                 <option value=''>Select Country</option>
-                <option value='USA'>Bangladesh</option>
+                <option value='Bangladesh'>Bangladesh</option>
                 <option value='USA'>USA</option>
                 <option value='UK'>UK</option>
                 <option value='Canada'>Canada</option>
                 <option value='Australia'>Australia</option>
-                <option value='Australia'>Japan</option>
-                <option value='Australia'>Ireland</option>
-                <option value='Australia'>South Korea</option>
-                <option value='Australia'>China</option>
+                <option value='Malaysia'>Malaysia</option>
+                <option value='Europe'>Europe</option>
+                <option value='Japan'>Japan</option>
+                <option value='Ireland'>Ireland</option>
+                <option value='South Korea'>South Korea</option>
+                <option value='China'>China</option>
                 <option value='Germany'>Germany</option>
               </select>
               <textarea

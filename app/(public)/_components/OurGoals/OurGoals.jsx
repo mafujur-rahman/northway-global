@@ -49,7 +49,7 @@ export default function OurGoals() {
                     <Icon className='text-[#FF9100] text-3xl' />
                   </div>
                   <div className='flex-1'>
-                    <span className='inline-block px-3 py-1 bg-white/20 rounded-full  text-xs font-semibold mb-2'>
+                    <span className='inline-block  py-1 bg-white/20 rounded-full  text-xs font-semibold mb-2'>
                       {goal.title}
                     </span>
                     <h3 className='text-2xl font-bold '>
@@ -62,7 +62,7 @@ export default function OurGoals() {
                   {goal.description}
                 </p>
                 
-                <div className='flex items-center justify-end pt-3 border-t border-black/10'>
+                <div className='flex items-center justify-start pt-3 border-t border-black/10'>
                   <span className=' text-sm  transition-colors flex items-center gap-2'>
                     Learn more <FaArrowRight className='text-xs group-hover:translate-x-1 transition-transform' />
                   </span>

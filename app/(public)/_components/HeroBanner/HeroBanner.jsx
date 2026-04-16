@@ -112,7 +112,7 @@ export default function HeroBanner() {
           {/* Badge on the right side - aligned with p tag position */}
           <div className='flex-shrink-0 mt-[120px] md:mt-[140px] xl:mt-[180px]'>
             <div className='flex items-center gap-3'>
-              <div className='bg-[#ff9100] text-white px-6 py-2 rounded-full text-sm md:text-lg font-medium shadow-lg whitespace-nowrap'>
+              <div className='bg-[#ff9100] text-black px-6 py-2 rounded-full text-sm md:text-lg lg:text-xl xl:text-2xl font-medium shadow-lg whitespace-nowrap'>
                 Study Abroad Made Simplified at Northway Global
               </div>
               <div>

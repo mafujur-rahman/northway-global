@@ -6,18 +6,40 @@ import {
   FaLinkedinIn,
   FaMapMarkerAlt,
   FaPhoneAlt,
-  FaEnvelope
+  FaEnvelope,
+  FaArrowRight
 } from 'react-icons/fa'
 import logo from '../../../public/logo.webp'
+import BaseBtn from '../../utlities/CommonBtn/BaseBtn'
 
-export default function Footer () {
+export default function Footer() {
   // Common email for all offices
   const commonEmail = 'infonorthwaybd@gmail.com'
 
   return (
-    <footer className='bg-[#FFF9F3]'>
-      <div className=' section__spacing common__top__section__spacing'>
-        <div className=' grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 '>
+    <footer className=''>
+      {/* Call to Action Section - No gap on top */}
+      <div className='section__spacing bg-white py-8 md:py-12 text-center rounded-2xl'>
+        <div className='max-w-3xl mx-auto px-4'>
+          <h2 className='text-3xl md:text-4xl font-bold text-gray-900 mb-4'>
+            Ready to Start Your Journey?
+          </h2>
+          <p className='text-gray-600 text-base md:text-lg mb-6'>
+            Let us help you achieve your goals with our expert guidance and support.
+            Get in touch with us today to begin your success story.
+          </p>
+          <BaseBtn
+            text='Get Started Now'
+            link='/contact-us'
+            icon={FaArrowRight}
+            className='bg-[#ff9100] text-white'
+          />
+        </div>
+      </div>
+
+      {/* Main Footer Content */}
+      <div className='bg-[#FFF9F3]  px-4 md:px-10  lg:px-12 xl:px-20 common__top__section__spacing'>
+        <div className='grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8'>
           {/* Company Info */}
           <div>
             <div>
@@ -34,25 +56,25 @@ export default function Footer () {
             </p>
 
             <div className='flex space-x-4'>
-              <a href='#' className='p-2 bg-[#ff9100] rounded-full text-white'>
+              <a href='https://facebook.com/northwayglobal' target='_blank' className='p-2 bg-[#ff9100] rounded-full text-white hover:bg-[#e68200] transition-colors'>
                 <FaFacebookF />
               </a>
-              <a href='#' className='p-2 bg-[#ff9100] rounded-full text-white'>
+              <a href='https://instagram.com/northwayglobal' target='_blank' className='p-2 bg-[#ff9100] rounded-full text-white hover:bg-[#e68200] transition-colors'>
                 <FaInstagram />
               </a>
-              <a href='#' className='p-2 bg-[#ff9100] rounded-full text-white'>
+              <a href='https://linkedin.com/northwayglobal' target='_blank' className='p-2 bg-[#ff9100] rounded-full text-white hover:bg-[#e68200] transition-colors'>
                 <FaLinkedinIn />
               </a>
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
+          {/* Quick Links - Moved to the right on large screens */}
+          <div className='lg:pl-8 xl:pl-12'>
             <ul className='space-y-1 text-base'>
               <li>
                 <a
                   href='/about-us'
-                  className='underline hover:text-[#FF9100] underline-offset-2'
+                  className='underline hover:text-[#FF9100] underline-offset-2 transition-colors'
                 >
                   About Us
                 </a>
@@ -60,15 +82,15 @@ export default function Footer () {
               <li>
                 <a
                   href='/service'
-                  className='underline hover:text-[#FF9100] underline-offset-2'
+                  className='underline hover:text-[#FF9100] underline-offset-2 transition-colors'
                 >
-                 Services
+                  Services
                 </a>
               </li>
               <li>
                 <a
                   href='/photo-gallery'
-                  className='underline hover:text-[#FF9100] underline-offset-2'
+                  className='underline hover:text-[#FF9100] underline-offset-2 transition-colors'
                 >
                   Photo Gallery
                 </a>
@@ -76,7 +98,7 @@ export default function Footer () {
               <li>
                 <a
                   href='/blogs'
-                  className='underline hover:text-[#FF9100] underline-offset-2'
+                  className='underline hover:text-[#FF9100] underline-offset-2 transition-colors'
                 >
                   Blogs
                 </a>
@@ -84,7 +106,7 @@ export default function Footer () {
               <li>
                 <a
                   href='/contact-us'
-                  className='underline hover:text-[#FF9100] underline-offset-2'
+                  className='underline hover:text-[#FF9100] underline-offset-2 transition-colors'
                 >
                   Contact Us
                 </a>
@@ -97,7 +119,7 @@ export default function Footer () {
             <ul>
               <li className='space-y-2 text-base'>
                 <p className='text__medium flex items-center gap-2'>
-                   Dhaka Office
+                  Dhaka Office
                 </p>
                 <div className='space-y-1.5'>
                   <div className='flex items-start gap-2 min-h-[48px]'>
@@ -122,7 +144,7 @@ export default function Footer () {
             <ul>
               <li className='space-y-2 text-base'>
                 <p className='text__medium flex items-center gap-2'>
-                   USA Office
+                  USA Office
                 </p>
                 <div className='space-y-1.5'>
                   <div className='flex items-start gap-2 min-h-[48px]'>
@@ -147,7 +169,7 @@ export default function Footer () {
             <ul>
               <li className='space-y-2 text-base'>
                 <p className='text__medium flex items-center gap-2'>
-                   Australia Office
+                  Australia Office
                 </p>
                 <div className='space-y-1.5'>
                   <div className='flex items-start gap-2 min-h-[48px]'>

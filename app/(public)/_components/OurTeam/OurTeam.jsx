@@ -5,36 +5,52 @@ import { HiOutlineMail } from 'react-icons/hi'
 
 export default function OurTeam() {
   const teamMembers = [
+
     {
       id: 1,
-      name: 'Mehedi Hasan',
-      image: '/team/Mehedi Hasan.jpeg',
+      name: 'Md. Mahbubur Rahman',
+      title: 'Founder & Chairman',
+      image: '/team/Abul hayat.jpeg',
+    },
+    {
+      id: 1,
+      name: 'Abul Hayat',
+      title: 'Chief Advisor',
+      image: '/team/Abul hayat.jpeg',
     },
     {
       id: 2,
-      name: 'Mahmudul Hasan',
+      name: 'Md Qumruzzaman',
+      title: 'Advisor',
+      image: '/team/Qumruzzaman.jpeg',
+    },
+
+    {
+      id: 3,
+      name: 'Md Mahmudul Hasan',
+      title: 'Manager',
       image: '/team/Mahmudul Hasan.jpeg',
     },
     {
-      id: 3,
+      id: 4,
       name: 'Farzana Yeasmin',
+      title: 'Executive', // Added title
       image: '/team/Farzana Yeasmin.jpeg',
     },
-    {
-      id: 4,
-      name: 'Qumruzzaman',
-      image: '/team/Qumruzzaman.jpeg',
-    },
+
     {
       id: 5,
       name: 'Shamima Akter',
+      title: 'Manager IR',
       image: '/team/Shamima Akter.jpeg',
     },
     {
       id: 6,
-      name: 'Abul Hayat',
-      image: '/team/Abul hayat.jpeg',
-    }
+      name: 'Mehedi Hasan',
+      title: 'BDO',
+      image: '/team/Mehedi Hasan.jpeg',
+    },
+
   ]
 
   return (
@@ -69,6 +85,9 @@ export default function OurTeam() {
 
             {/* Name */}
             <h3 className='mt-4 text__medium'>{member.name}</h3>
+
+            {/* Title Designation - Added this line */}
+            <p className='text-sm text-gray-500 mt-1'>{member.title}</p>
           </div>
         ))}
       </div>

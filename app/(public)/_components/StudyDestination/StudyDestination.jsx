@@ -2,48 +2,57 @@
 import { MdOutlineLocalOffer } from 'react-icons/md'
 import SectionHeading from '../utlities/SectionHeading/SectionHeading'
 import { HiAcademicCap } from 'react-icons/hi2'
+import Link from 'next/link'
 
-export default function StudyDestination () {
+export default function StudyDestination() {
   const studyDestinations = [
     {
       id: 1,
       country: 'Canada',
-      img: 'https://pub-5955669eccb64965b91474a798f31ae3.r2.dev/studydestination/Canada.jpg'
+      img: 'https://pub-5955669eccb64965b91474a798f31ae3.r2.dev/studydestination/Canada.jpg',
+      link:'/canada'
     },
     {
       id: 2,
       country: 'UK',
-      img: 'https://pub-5955669eccb64965b91474a798f31ae3.r2.dev/studydestination/London.jpg'
+      img: 'https://pub-5955669eccb64965b91474a798f31ae3.r2.dev/studydestination/London.jpg',
+      link:'/uk'
     },
     {
       id: 3,
       country: 'China',
-      img: 'https://pub-5955669eccb64965b91474a798f31ae3.r2.dev/studydestination/chinaGreatWall.jpg'
+      img: 'https://pub-5955669eccb64965b91474a798f31ae3.r2.dev/studydestination/chinaGreatWall.jpg',
+      link:'/china'
     },
     {
       id: 4,
       country: 'United States',
-      img: 'https://pub-5955669eccb64965b91474a798f31ae3.r2.dev/studydestination/img1.webp'
+      img: 'https://pub-5955669eccb64965b91474a798f31ae3.r2.dev/studydestination/img1.webp',
+      link:'/usa'
     },
     {
       id: 5,
       country: 'Europe',
-      img: 'https://pub-5955669eccb64965b91474a798f31ae3.r2.dev/studydestination/ireland-6717714b87c95.webp'
+      img: 'https://pub-5955669eccb64965b91474a798f31ae3.r2.dev/studydestination/ireland-6717714b87c95.webp',
+      link:'/europe'
     },
     {
       id: 6,
       country: 'Malaysia',
-      img: 'https://pub-5955669eccb64965b91474a798f31ae3.r2.dev/studydestination/malaysiaStudy.webp'
+      img: 'https://pub-5955669eccb64965b91474a798f31ae3.r2.dev/studydestination/malaysiaStudy.webp',
+      link:'/malaysia'
     },
     {
       id: 7,
       country: 'Germany',
-      img: 'https://pub-5955669eccb64965b91474a798f31ae3.r2.dev/studydestination/europ-671771c9cc68d.webp'
+      img: 'https://pub-5955669eccb64965b91474a798f31ae3.r2.dev/studydestination/europ-671771c9cc68d.webp',
+      link:'/germany'
     },
     {
       id: 8,
       country: 'Australia',
-      img: 'https://pub-5955669eccb64965b91474a798f31ae3.r2.dev/studydestination/australia.webp'
+      img: 'https://pub-5955669eccb64965b91474a798f31ae3.r2.dev/studydestination/australia.webp',
+      link:'/australia'
     }
   ]
 
@@ -61,7 +70,8 @@ export default function StudyDestination () {
       <div className='common__top__spacing'>
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5'>
           {studyDestinations.map(dest => (
-            <div
+            <Link
+              href={dest.link}
               key={dest.id}
               className='relative group overflow-hidden rounded-md cursor-pointer'
             >
@@ -75,7 +85,7 @@ export default function StudyDestination () {
                   {dest.country}
                 </span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
