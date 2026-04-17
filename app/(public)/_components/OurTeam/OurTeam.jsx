@@ -10,7 +10,7 @@ export default function OurTeam() {
       id: 1,
       name: 'Md. Mahbubur Rahman',
       title: 'Founder & Chairman',
-      image: '/team/Abul hayat.jpeg',
+      image: '',
     },
     {
       id: 1,
