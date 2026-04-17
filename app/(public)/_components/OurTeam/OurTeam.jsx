@@ -34,7 +34,7 @@ export default function OurTeam() {
     {
       id: 4,
       name: 'Farzana Yeasmin',
-      title: 'Executive', // Added title
+      title: 'Student Relationship Officer',
       image: '/team/Farzana Yeasmin.jpeg',
     },
 
