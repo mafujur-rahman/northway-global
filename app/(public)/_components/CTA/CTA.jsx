@@ -9,7 +9,7 @@ export default function CTA () {
       <div className='ct__parent'>
         <div>
           <h3 className='headingText !text-white'>
-            Choose from <span className='heading__color__text'>1000+ University</span> and College Scholarships
+            Choose from <span className='heading__color__text'>100+ University</span> and College Scholarships
           </h3>
           <p className='heading__sub__text !text-white  !font-semibold mb-10 mt-5 text-shadow-2xs'>
             Explore numerous opportunities to further your education and career

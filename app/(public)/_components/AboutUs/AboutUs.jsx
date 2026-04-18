@@ -20,7 +20,8 @@ export default function AboutUs ({ heading, btnLink, colorText }) {
     stats: [
       { number: '1000+', label: 'Global University Tips' },
       { number: '3+', label: 'Office Across The Globe' },
-      { number: '8+', label: 'Years Industry Presence' }
+      { number: '8+', label: 'Years Industry Presence' },
+      {number: '100%', label: 'Student Satisfaction'}
     ]
   }
 
@@ -39,7 +40,7 @@ export default function AboutUs ({ heading, btnLink, colorText }) {
             ></iframe>
           </div>
           <div>
-            <div className='grid grid-cols-1 lg:grid-cols-3 gap-2  '>
+            <div className='grid grid-cols-1 lg:grid-cols-4 gap-2  '>
               {aboutUsData.stats.map((stat, i) => (
                 <div
                   key={i}

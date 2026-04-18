@@ -124,7 +124,7 @@ export default function Footer() {
                 <div className='space-y-1.5'>
                   <div className='flex items-start gap-2 min-h-[48px]'>
                     <FaMapMarkerAlt className='text-[#FF9100] shrink-0 mt-0.5' size={12} />
-                    <span className='flex-1'>Kha-12/2, Shahjaspur, Gulshan, Dhaka-1212</span>
+                    <span className='flex-1'>Kha-12/2, Shahjadpur, Gulshan, Dhaka-1212</span>
                   </div>
                   <div className='flex items-center gap-2'>
                     <FaPhoneAlt className='text-[#FF9100] shrink-0' size={12} />
