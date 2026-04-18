@@ -92,7 +92,7 @@ export default function HeroBanner() {
       <div className='absolute inset-0 bg-black/50 z-10' />
 
       {/* Content */}
-      <div className='absolute inset-0 z-20 flex flex-col justify-center px-6 md:px-10 xl:px-20'>
+      <div className='absolute inset-0 z-20 flex flex-col justify-center px-4 md:px-10 xl:px-20'>
         {/* Responsive flex: column on mobile, row on desktop */}
         <div className='flex flex-col lg:flex-row justify-between items-start gap-8'>
           {/* Left side content */}
@@ -113,15 +113,15 @@ export default function HeroBanner() {
           {/* Badge on the right side - responsive with text wrapping */}
           <div className='flex-shrink-0 w-full lg:w-auto lg:mt-[140px] xl:mt-[180px]'>
             <div className='flex items-center gap-3 flex-wrap'>
-              <div className='bg-[#ff9100] text-black px-6 py-2 rounded-full text-sm md:text-lg lg:text-xl xl:text-2xl font-medium shadow-lg text-center break-words max-w-full'>
-                Study Abroad Made Simplified at Northway Global
+              <div className='bg-[#ff9100] text-black px-6 py-2 rounded-full text-[12px] md:text-lg lg:text-xl xl:text-2xl font-medium shadow-lg text-center break-words max-w-full'>
+                Study Abroad Made  <br />Simplified at Northway Global
               </div>
               {/* Plane image - hidden on mobile, visible on tablet and desktop */}
-              <div className='hidden sm:block'>
+              <div className=''>
                 <img
                   src='/plane-icon.png'
                   alt='Plane Icon'
-                  className='h-8 md:h-10 w-auto object-contain'
+                  className='h-14 lg:h-16 xl:h-18 2xl:h-20 w-auto object-contain'
                 />
               </div>
             </div>

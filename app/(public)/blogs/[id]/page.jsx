@@ -79,7 +79,11 @@ export default function BlogDetailsPage({ params }) {
     });
   };
 
-  // Loading, Error, and UI states remain the same as in your previous working version...
+  // Function to render HTML content safely
+  const renderHTMLContent = (htmlContent) => {
+    return { __html: htmlContent };
+  };
+
   if (loading) {
     return (
       <div className='section__spacing'>
@@ -106,7 +110,7 @@ export default function BlogDetailsPage({ params }) {
       <div className='section__spacing'>
         <div className='container mx-auto px-4'>
           <div className='max-w-4xl mx-auto text-center'>
-            <div className=' rounded-lg shadow-sm p-8'>
+            <div className='rounded-lg shadow-sm p-8'>
               <div className='text-red-600 text-5xl mb-4'>⚠️</div>
               <h2 className='text-2xl font-bold text-gray-800 mb-2'>Blog Not Found</h2>
               <p className='text-gray-600 mb-6'>{error}</p>
@@ -211,16 +215,150 @@ export default function BlogDetailsPage({ params }) {
                 </div>
               )}
 
-              {/* Main Content */}
-              <div className='prose prose-lg max-w-none'>
-                <p className='text-gray-700 leading-relaxed whitespace-pre-wrap'>
-                  {blog.content}
-                </p>
+              {/* Main Content - HTML Render */}
+              <div className='blog-content prose prose-lg max-w-none'>
+                <div dangerouslySetInnerHTML={renderHTMLContent(blog.content)} />
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Add custom styles for HTML content */}
+      <style jsx global>{`
+        .blog-content {
+          line-height: 1.8;
+        }
+        
+        .blog-content h1 {
+          font-size: 2em;
+          margin-top: 1.5em;
+          margin-bottom: 0.5em;
+          font-weight: bold;
+          color: #1a202c;
+        }
+        
+        .blog-content h2 {
+          font-size: 1.5em;
+          margin-top: 1.2em;
+          margin-bottom: 0.5em;
+          font-weight: bold;
+          color: #2d3748;
+        }
+        
+        .blog-content h3 {
+          font-size: 1.25em;
+          margin-top: 1em;
+          margin-bottom: 0.5em;
+          font-weight: bold;
+          color: #2d3748;
+        }
+        
+        .blog-content p {
+          margin-bottom: 1.2em;
+          color: #4a5568;
+        }
+        
+        .blog-content ul, 
+        .blog-content ol {
+          margin: 1em 0;
+          padding-left: 2em;
+        }
+        
+        .blog-content li {
+          margin-bottom: 0.5em;
+        }
+        
+        .blog-content a {
+          color: #ff9100;
+          text-decoration: underline;
+          transition: color 0.2s;
+        }
+        
+        .blog-content a:hover {
+          color: #e68200;
+        }
+        
+        .blog-content img {
+          max-width: 100%;
+          height: auto;
+          margin: 1.5em 0;
+          border-radius: 8px;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .blog-content table {
+          width: 100%;
+          border-collapse: collapse;
+          margin: 1.5em 0;
+        }
+        
+        .blog-content th,
+        .blog-content td {
+          border: 1px solid #e2e8f0;
+          padding: 0.75em;
+          text-align: left;
+        }
+        
+        .blog-content th {
+          background-color: #f7fafc;
+          font-weight: bold;
+        }
+        
+        .blog-content blockquote {
+          border-left: 4px solid #ff9100;
+          margin: 1.5em 0;
+          padding: 0.5em 0 0.5em 1.5em;
+          background-color: #f7fafc;
+          font-style: italic;
+          color: #4a5568;
+        }
+        
+        .blog-content code {
+          background-color: #edf2f7;
+          padding: 0.2em 0.4em;
+          border-radius: 4px;
+          font-family: monospace;
+          font-size: 0.9em;
+        }
+        
+        .blog-content pre {
+          background-color: #2d3748;
+          color: #f7fafc;
+          padding: 1em;
+          border-radius: 8px;
+          overflow-x: auto;
+          margin: 1.5em 0;
+        }
+        
+        .blog-content pre code {
+          background-color: transparent;
+          color: inherit;
+          padding: 0;
+        }
+        
+        .blog-content iframe {
+          max-width: 100%;
+          margin: 1.5em 0;
+          border-radius: 8px;
+        }
+        
+        .blog-content hr {
+          margin: 2em 0;
+          border: none;
+          height: 1px;
+          background: linear-gradient(to right, transparent, #e2e8f0, transparent);
+        }
+        
+        .blog-content strong {
+          font-weight: bold;
+          color: #2d3748;
+        }
+        
+        .blog-content em {
+          font-style: italic;
+        }
+      `}</style>
     </div>
   );
 }

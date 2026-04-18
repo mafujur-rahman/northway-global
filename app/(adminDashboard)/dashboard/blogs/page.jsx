@@ -1,11 +1,14 @@
 // app/dashboard/blogs/page.js
 'use client';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import axios from 'axios';
 import { FaEdit, FaTrash, FaFilePdf, FaTimes, FaUpload, FaExclamationTriangle } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import DashboardLayout from '../page';
+import dynamic from 'next/dynamic';
 
+// Dynamically import JoditEditor to avoid SSR issues
+const JoditEditor = dynamic(() => import('jodit-react'), { ssr: false });
 
 // Separate Blog Form Modal Component to prevent re-renders
 const BlogFormModal = ({ isOpen, onClose, onSubmit, initialData, isLoading, editingBlog }) => {
@@ -19,33 +22,88 @@ const BlogFormModal = ({ isOpen, onClose, onSubmit, initialData, isLoading, edit
     });
     const [preview, setPreview] = useState({ thumbnail: null, pdf: null });
     const [errors, setErrors] = useState({});
+    const editorRef = useRef(null);
+    
+    // Use ref for content to avoid re-renders
+    const contentRef = useRef('');
+    const isTypingRef = useRef(false);
+    const typingTimeoutRef = useRef(null);
 
-    useEffect(() => {
-        if (initialData) {
-            setFormData({
-                title: initialData.title || '',
-                writer: initialData.writer || '',
-                short_summary: initialData.short_summary || '',
-                content: initialData.content || '',
-                pdf_file: null,
-                thumbnail: null
-            });
-            if (initialData.thumbnail) {
-                setPreview(prev => ({ ...prev, thumbnail: initialData.thumbnail }));
+    // Jodit editor configuration - memoized to prevent recreation
+    const editorConfig = useMemo(() => ({
+        readonly: false,
+        placeholder: 'Write your blog content here...',
+        buttons: [
+            'source', '|', 'bold', 'italic', 'underline', 'strikethrough', '|',
+            'ul', 'ol', '|', 'outdent', 'indent', '|', 'font', 'fontsize',
+            'brush', 'paragraph', '|', 'image', 'video', 'table', 'link', '|',
+            'align', 'undo', 'redo', '|', 'hr', 'eraser', 'fullsize'
+        ],
+        uploader: {
+            insertImageAsBase64URI: true
+        },
+        height: 400,
+        toolbarAdaptive: false,
+        showXPathInStatusbar: false,
+        askBeforePasteHTML: false,
+        askBeforePasteFromWord: false,
+        defaultActionOnPaste: 'insert_as_html',
+        removeButtons: ['about'],
+        spellcheck: true,
+        autofocus: false,
+        toolbarButtonSize: 'middle',
+        theme: 'default',
+        language: 'en',
+        tooltips: true,
+        // Critical settings to prevent cursor issues
+        allowResizeX: false,
+        allowResizeY: false,
+        saveModeInStorage: false,
+        triggerChangeAfterKeypress: 0,
+        globalFullsize: false,
+        useSplitMode: false,
+        // Prevent re-renders
+        zIndex: 10001,
+        events: {
+            beforePaste: function(event) {
+                return true;
             }
-        } else {
+        }
+    }), []);
+
+    // Initialize content ref when modal opens
+    useEffect(() => {
+        if (isOpen) {
+            const initialContent = initialData?.content || '';
+            contentRef.current = initialContent;
+            isTypingRef.current = false;
+            
             setFormData({
-                title: '',
-                writer: '',
-                short_summary: '',
-                content: '',
+                title: initialData?.title || '',
+                writer: initialData?.writer || '',
+                short_summary: initialData?.short_summary || '',
+                content: initialContent,
                 pdf_file: null,
                 thumbnail: null
             });
-            setPreview({ thumbnail: null, pdf: null });
+            
+            if (initialData?.thumbnail) {
+                setPreview(prev => ({ ...prev, thumbnail: initialData.thumbnail }));
+            } else {
+                setPreview({ thumbnail: null, pdf: null });
+            }
+            setErrors({});
         }
-        setErrors({});
-    }, [initialData, isOpen]);
+    }, [isOpen, initialData]);
+
+    // Cleanup timeout on unmount
+    useEffect(() => {
+        return () => {
+            if (typingTimeoutRef.current) {
+                clearTimeout(typingTimeoutRef.current);
+            }
+        };
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -54,6 +112,47 @@ const BlogFormModal = ({ isOpen, onClose, onSubmit, initialData, isLoading, edit
             setErrors(prev => ({ ...prev, [name]: '' }));
         }
     };
+
+    // Handle content change without causing re-renders that affect cursor
+    const handleContentChange = useCallback((newContent) => {
+        // Update ref immediately
+        contentRef.current = newContent;
+        isTypingRef.current = true;
+        
+        // Clear previous timeout
+        if (typingTimeoutRef.current) {
+            clearTimeout(typingTimeoutRef.current);
+        }
+        
+        // Only update state after user stops typing
+        typingTimeoutRef.current = setTimeout(() => {
+            if (isTypingRef.current) {
+                setFormData(prev => {
+                    if (prev.content !== contentRef.current) {
+                        return { ...prev, content: contentRef.current };
+                    }
+                    return prev;
+                });
+                isTypingRef.current = false;
+                
+                if (errors.content) {
+                    setErrors(prev => ({ ...prev, content: '' }));
+                }
+            }
+        }, 500);
+    }, [errors.content]);
+
+    // Handle blur - final update
+    const handleBlur = useCallback(() => {
+        if (typingTimeoutRef.current) {
+            clearTimeout(typingTimeoutRef.current);
+        }
+        
+        if (contentRef.current !== formData.content) {
+            setFormData(prev => ({ ...prev, content: contentRef.current }));
+        }
+        isTypingRef.current = false;
+    }, [formData.content]);
 
     const handleFileChange = (e) => {
         const { name, files } = e.target;
@@ -87,12 +186,16 @@ const BlogFormModal = ({ isOpen, onClose, onSubmit, initialData, isLoading, edit
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        
+        // Make sure we have the latest content
+        const finalContent = contentRef.current || formData.content;
+        
         if (validateForm()) {
             const submitData = new FormData();
             submitData.append('title', formData.title);
             submitData.append('writer', formData.writer);
             submitData.append('short_summary', formData.short_summary);
-            submitData.append('content', formData.content);
+            submitData.append('content', finalContent);
             
             if (formData.thumbnail && formData.thumbnail instanceof File) {
                 submitData.append('thumbnail', formData.thumbnail);
@@ -115,7 +218,7 @@ const BlogFormModal = ({ isOpen, onClose, onSubmit, initialData, isLoading, edit
                     onClick={onClose}
                 ></div>
 
-                <div className="relative bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[85vh] overflow-y-auto z-[10000]">
+                <div className="relative bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] overflow-y-auto z-[10000]">
                     <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center z-10">
                         <h3 className="text-lg font-semibold text-gray-900">
                             {editingBlog ? 'Edit Blog' : 'Create New Blog'}
@@ -175,13 +278,12 @@ const BlogFormModal = ({ isOpen, onClose, onSubmit, initialData, isLoading, edit
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Content <span className="text-red-500">*</span>
                             </label>
-                            <textarea
-                                name="content"
-                                rows="5"
-                                value={formData.content}
-                                onChange={handleChange}
-                                className={`w-full px-3 py-2 border ${errors.content ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff9100] focus:border-transparent`}
-                                placeholder="Enter blog content"
+                            <JoditEditor
+                                ref={editorRef}
+                                value={contentRef.current}
+                                config={editorConfig}
+                                onBlur={handleBlur}
+                                onChange={handleContentChange}
                             />
                             {errors.content && <p className="mt-1 text-xs text-red-500">{errors.content}</p>}
                         </div>
@@ -296,6 +398,16 @@ const DeleteConfirmationModal = ({ isOpen, onClose, onConfirm, blog }) => {
     );
 };
 
+// Component to display HTML content safely
+const BlogContent = ({ content }) => {
+    return (
+        <div 
+            className="blog-content prose prose-sm max-w-none"
+            dangerouslySetInnerHTML={{ __html: content }}
+        />
+    );
+};
+
 // Main Component
 export default function BlogsPage() {
     const [blogs, setBlogs] = useState([]);
@@ -305,6 +417,7 @@ export default function BlogsPage() {
     const [editingBlog, setEditingBlog] = useState(null);
     const [deleteModal, setDeleteModal] = useState({ show: false, blog: null });
     const [formLoading, setFormLoading] = useState(false);
+    const [viewingBlog, setViewingBlog] = useState(null);
 
     // Pagination states
     const [currentPage, setCurrentPage] = useState(1);
@@ -411,6 +524,10 @@ export default function BlogsPage() {
         setShowForm(false);
     };
 
+    const handleViewBlog = (blog) => {
+        setViewingBlog(blog);
+    };
+
     // Blog Table Component
     const BlogTable = () => {
         if (loading) {
@@ -476,7 +593,12 @@ export default function BlogsPage() {
                                         </td>
                                         <td className="px-4 py-3">
                                             <div className="max-w-xs">
-                                                <p className="text-sm font-medium text-gray-900 truncate">{blog.title}</p>
+                                                <button 
+                                                    onClick={() => handleViewBlog(blog)}
+                                                    className="text-sm font-medium text-gray-900 truncate hover:text-[#ff9100] hover:underline text-left"
+                                                >
+                                                    {blog.title}
+                                                </button>
                                                 <p className="text-xs text-gray-500 mt-1 truncate">{blog.short_summary}</p>
                                             </div>
                                         </td>
@@ -539,6 +661,63 @@ export default function BlogsPage() {
         );
     };
 
+    // Blog View Modal
+    const BlogViewModal = ({ blog, onClose }) => {
+        if (!blog) return null;
+
+        return (
+            <div className="fixed inset-0 z-[9999] overflow-y-auto">
+                <div className="flex items-center justify-center min-h-screen px-4 py-8">
+                    <div 
+                        className="fixed inset-0 backdrop-blur-md bg-white/30" 
+                        onClick={onClose}
+                    ></div>
+
+                    <div className="relative bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] overflow-y-auto z-[10000]">
+                        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center z-10">
+                            <h3 className="text-xl font-semibold text-gray-900">{blog.title}</h3>
+                            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+                                <FaTimes />
+                            </button>
+                        </div>
+
+                        <div className="p-6">
+                            {blog.thumbnail && (
+                                <div className="mb-6">
+                                    <img src={blog.thumbnail} alt={blog.title} className="w-full max-h-96 object-cover rounded-lg" />
+                                </div>
+                            )}
+                            
+                            <div className="mb-4 flex items-center justify-between flex-wrap gap-2">
+                                <div>
+                                    <p className="text-sm text-gray-600">Writer: <span className="font-medium">{blog.writer}</span></p>
+                                    <p className="text-sm text-gray-600">Posted Year: <span className="font-medium">{blog.posted_year}</span></p>
+                                </div>
+                                {blog.pdf_file && (
+                                    <a href={blog.pdf_file} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition flex items-center gap-2">
+                                        <FaFilePdf /> Download PDF
+                                    </a>
+                                )}
+                            </div>
+                            
+                            <div className="mb-4 p-4 bg-gray-50 rounded-lg">
+                                <h4 className="text-sm font-semibold text-gray-700 mb-2">Short Summary</h4>
+                                <p className="text-gray-600">{blog.short_summary}</p>
+                            </div>
+                            
+                            <div>
+                                <h4 className="text-sm font-semibold text-gray-700 mb-2">Full Content</h4>
+                                <div className="blog-content prose prose-sm max-w-none">
+                                    <BlogContent content={blog.content} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
     return (
         <DashboardLayout>
             <div className="space-y-6">
@@ -568,6 +747,11 @@ export default function BlogsPage() {
                     onClose={() => setDeleteModal({ show: false, blog: null })}
                     onConfirm={handleDelete}
                     blog={deleteModal.blog}
+                />
+
+                <BlogViewModal
+                    blog={viewingBlog}
+                    onClose={() => setViewingBlog(null)}
                 />
             </div>
         </DashboardLayout>

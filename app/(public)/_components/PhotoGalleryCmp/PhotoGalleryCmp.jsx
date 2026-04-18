@@ -22,7 +22,7 @@ export default function PhotoGalleryCmp() {
         const token = getAuthToken();
         const response = await axios.get(
           'https://nortway.mrshakil.com/api/gallery/photos/',
-          { headers: { 'Authorization': `Token ${token}` } }
+          
         );
         
         console.log('Gallery API Response:', response.data);
@@ -72,11 +72,8 @@ export default function PhotoGalleryCmp() {
   if (error) {
     return (
       <div className='section__spacing'>
-        <div className='text-center mb-8'>
-          <h2 className='text-3xl font-bold text-gray-800 mb-2'>Photo Gallery</h2>
-          <p className='text-gray-600'>Explore our collection of memorable moments</p>
-        </div>
-        <div className='text-center text-red-600 p-8 bg-white rounded-lg'>
+        
+        <div className='text-center text-red-600 p-8  rounded-lg'>
           <p>{error}</p>
           <button 
             onClick={() => window.location.reload()}
@@ -94,19 +91,19 @@ export default function PhotoGalleryCmp() {
 
 
       {images.length === 0 ? (
-        <div className='text-center py-12 bg-white rounded-lg'>
+        <div className='text-center py-12 rounded-lg'>
           <div className='text-gray-400 text-6xl mb-4'>📷</div>
           <h3 className='text-xl font-semibold text-gray-700 mb-2'>No Images Yet</h3>
           <p className='text-gray-500'>Check back soon for new photos!</p>
         </div>
       ) : (
         <>
-          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4'>
             {visibleImages.map((image) => (
               <div 
                 key={image.id} 
-                className='overflow-hidden rounded-lg group cursor-pointer relative'
-                onClick={() => window.open(image.photo, '_blank')}
+                className='overflow-hidden rounded-lg group  relative'
+               
               >
                 <img
                   src={image.photo}

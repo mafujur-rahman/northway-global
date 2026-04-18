@@ -27,7 +27,6 @@ export default function BlogList() {
         const token = getAuthToken();
         const response = await axios.get(
           'https://nortway.mrshakil.com/api/blogs/',
-          { headers: { 'Authorization': `Token ${token}` } }
         );
 
         if (response.data.success) {

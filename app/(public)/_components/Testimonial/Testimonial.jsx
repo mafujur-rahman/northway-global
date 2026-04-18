@@ -74,7 +74,6 @@ export default function TestimonialsPage() {
         const token = getAuthToken();
         const response = await axios.get(
           'https://nortway.mrshakil.com/api/testimonial/',
-          { headers: { 'Authorization': `Token ${token}` } }
         );
         
         if (response.data.success) {

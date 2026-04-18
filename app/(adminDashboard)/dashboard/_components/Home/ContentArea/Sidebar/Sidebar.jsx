@@ -40,7 +40,7 @@ export default function Sidebar() {
   return (
     <aside className="fixed left-0 top-0 h-full w-64 bg-white border-r border-gray-200 flex flex-col z-20">
       {/* Logo Area */}
-      <Link href="/dashboard" className="p-5 border-b border-gray-200 hover:bg-gray-50 transition">
+      <Link href="/" className="p-5 border-b border-gray-200 hover:bg-gray-50 transition">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-[#ff9100] rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-lg">N</span>

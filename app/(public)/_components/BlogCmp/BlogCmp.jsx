@@ -26,7 +26,6 @@ export default function BlogCmp() {
         const token = getAuthToken();
         const response = await axios.get(
           'https://nortway.mrshakil.com/api/blogs/',
-          { headers: { 'Authorization': `Token ${token}` } }
         );
         
         console.log('Blogs API Response:', response.data);
