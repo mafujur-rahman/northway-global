@@ -34,7 +34,7 @@ const applicationProcess = [
 export default function ApplicationProcess() {
   return (
     <section className='section__spacing'>
-      <div className='container mx-auto px-4'>
+      <div className='px-4 md:px-10  lg:px-12 xl:px-20'>
         <h2 className='headingText text-center text-3xl md:text-4xl font-bold mb-4'>
           <span className='text-[#ff9100]'>Our</span> Application Process
         </h2>
@@ -45,33 +45,33 @@ export default function ApplicationProcess() {
           financial information, and a personal statement.
         </p>
 
-        {/* Desktop/Tablet View - Single horizontal line with proper overflow handling */}
-        <div className='hidden md:block overflow-x-auto pb-4 -mx-4 px-4'>
-          <div className='flex flex-row justify-start md:justify-center items-center gap-2 min-w-max'>
+        {/* Desktop/Tablet View - Full width cards with perfect arrow alignment */}
+        <div className='hidden md:block overflow-x-auto pb-4 -mx-4 '>
+          <div className='flex flex-row justify-start md:justify-center items-stretch gap-2 min-w-max'>
             {applicationProcess.map((step, index) => (
               <React.Fragment key={step.id}>
-                {/* Card */}
-                <div className='flex-shrink-0 w-[130px]'>
-                  <div className='bg-white rounded-xl p-4 text-center h-full flex flex-col'>
+                {/* Full Card */}
+                <div className='flex-shrink-0 w-[160px] xl:w-[160px]'>
+                  <div className='bg-white rounded-xl p-5 text-center h-full flex flex-col shadow-sm hover:shadow-md transition-shadow'>
                     <div
-                      className={`flex items-center justify-center w-16 h-16 mx-auto rounded-full border-2 border-dashed mb-3 ${
+                      className={`flex items-center justify-center w-16 h-16 mx-auto rounded-full border-2 border-dashed mb-4 ${
                         step.highlight
-                          ? 'bg-[#ff9100] text-white border-[#ff9100]'
-                          : 'border-gray-300 text-gray-700 bg-white'
+                          ? 'bg-[#ff9100]/10 text-[#ff9100] border-[#ff9100]'
+                          : 'border-[#ff9100] text-[#ff9100] bg-white'
                       }`}
                     >
                       {step.icon}
                     </div>
-                    <p className='text-xs font-medium text-gray-700 leading-tight min-h-[32px] flex items-center justify-center'>
+                    <p className='text-xs font-medium text-black leading-tight min-h-[48px] flex items-center justify-center'>
                       {step.title}
                     </p>
                   </div>
                 </div>
                 
-                {/* Arrow between cards */}
+                {/* Arrow between cards - perfectly centered vertically */}
                 {index < applicationProcess.length - 1 && (
-                  <div className='flex-shrink-0'>
-                    <FaArrowRight className='text-[#ff9100] text-2xl font-bold' />
+                  <div className='flex-shrink-0 flex items-center'>
+                    <FaArrowRight className='text-[#ff9100] text-xl font-bold' />
                   </div>
                 )}
               </React.Fragment>
@@ -84,12 +84,12 @@ export default function ApplicationProcess() {
           {applicationProcess.map((step, index) => (
             <React.Fragment key={step.id}>
               <div className='w-full max-w-[280px]'>
-                <div className='bg-white rounded-xl p-4 text-center'>
+                <div className='bg-white rounded-xl p-5 text-center shadow-sm'>
                   <div
-                    className={`flex items-center justify-center w-20 h-20 mx-auto rounded-full border-2 border-dashed mb-3 ${
+                    className={`flex items-center justify-center w-20 h-20 mx-auto rounded-full border-2 border-dashed mb-4 ${
                       step.highlight
-                        ? 'bg-[#ff9100] text-white border-[#ff9100]'
-                        : 'border-gray-300 text-gray-700 bg-white'
+                        ? 'bg-[#ff9100]/10 text-[#ff9100] border-[#ff9100]'
+                        : 'border-gray-300 text-[#ff9100] bg-white'
                     }`}
                   >
                     {step.icon}
@@ -100,7 +100,7 @@ export default function ApplicationProcess() {
                 </div>
               </div>
               {index < applicationProcess.length - 1 && (
-                <FaArrowRight className='text-[#ff9100] text-3xl rotate-90' />
+                <FaArrowRight className='text-[#ff9100] text-2xl rotate-90' />
               )}
             </React.Fragment>
           ))}

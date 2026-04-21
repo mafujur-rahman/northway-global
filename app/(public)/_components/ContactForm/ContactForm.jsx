@@ -17,8 +17,8 @@ export default function ContactForm() {
       name: "Bangladesh",
       flag: "https://pub-5955669eccb64965b91474a798f31ae3.r2.dev/flags/bangladesh.webp",
       email: "infonorthwaybd@gmail.com",
-      phone: "+880 1607-002687",
-      address: "Kha-12/2, Shahjadpur, Gulshan, Dhaka-1212"
+      phone: "+880 01771660030",
+      address: "kha-12/2, Shahjadpur (near USA embassy), Gulshan, Dhaka-1212"
     },
     {
       id: 2,

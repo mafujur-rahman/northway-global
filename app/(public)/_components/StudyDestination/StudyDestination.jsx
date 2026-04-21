@@ -3,6 +3,7 @@ import { MdOutlineLocalOffer } from 'react-icons/md'
 import SectionHeading from '../utlities/SectionHeading/SectionHeading'
 import { HiAcademicCap } from 'react-icons/hi2'
 import Link from 'next/link'
+import { FaPlane } from 'react-icons/fa'
 
 export default function StudyDestination() {
   const studyDestinations = [
@@ -60,7 +61,7 @@ export default function StudyDestination() {
     <div className='section__spacing'>
       <SectionHeading
         text='Destination'
-        Icon={HiAcademicCap}
+        Icon={FaPlane}
         title='Study '
         colorTitle='Destination'
         subtitle='Discover your ideal study destination with our expert guidance. We help you navigate the best global educational opportunities, tailored to your goals and ambitions. Start your journey towards academic success today!'

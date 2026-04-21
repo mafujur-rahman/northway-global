@@ -114,7 +114,7 @@ export default function HeroBanner() {
           <div className='flex-shrink-0 w-full lg:w-auto lg:mt-[140px] xl:mt-[180px]'>
             <div className='flex items-center gap-3 flex-wrap'>
               <div className='bg-[#ff9100] text-black px-6 py-2 rounded-full text-[12px] md:text-lg lg:text-xl xl:text-2xl font-medium shadow-lg text-left lg:text-center break-words max-w-full'>
-                Study Abroad Made  <br />Simplified at Northway Global
+                Study Abroad Made  <br />Simplified with Northway Global
               </div>
               {/* Plane image - hidden on mobile, visible on tablet and desktop */}
               <div className=''>

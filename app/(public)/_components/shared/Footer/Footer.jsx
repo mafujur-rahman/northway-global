@@ -22,7 +22,7 @@ export default function Footer() {
   return (
     <footer className=''>
       {/* Call to Action Section - No gap on top */}
-      <div className='section__spacing bg-white py-8 md:py-12 text-left lg:text-center '>
+      <div className='section__spacing bg-white py-8 md:py-12 lg:py-20 text-left lg:text-center '>
         <div className='max-w-3xl mx-auto '>
           <h2 className='text-3xl md:text-4xl font-bold text-gray-900 mb-4'>
             Ready to Start Your Journey?
@@ -128,7 +128,7 @@ export default function Footer() {
                 <div className='space-y-1.5'>
                   <div className='flex items-start gap-2 min-h-[48px]'>
                     <FaMapMarkerAlt className='text-[#FF9100] shrink-0 mt-0.5' size={12} />
-                    <span className='flex-1'>Kha-12/2, Shahjadpur, Gulshan, Dhaka-1212</span>
+                    <span className='flex-1'>kha-12/2, Shahjadpur (near USA embassy), Gulshan, Dhaka-1212</span>
                   </div>
                   <div className='flex items-center gap-2'>
                     <FaPhoneAlt className='text-[#FF9100] shrink-0' size={12} />

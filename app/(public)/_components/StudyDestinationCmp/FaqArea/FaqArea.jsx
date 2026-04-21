@@ -52,7 +52,7 @@ export default function FaqArea ({ countryName = 'USA' , faqsData , des}) {
           {/* Right: Single image */}
           <div className='lg:col-span-3 flex justify-center'>
             <img
-              src='https://pub-5955669eccb64965b91474a798f31ae3.r2.dev/usa/faq-66dc00ae9d778.webp'
+              src='/faq.png'
               alt='Study in USA'
               className='w-full h-auto rounded-lg  object-cover'
             />

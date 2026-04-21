@@ -19,13 +19,13 @@ export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(null)
   const [modalOpen, setModalOpen] = useState(false)
 
-  // Form state
+  // Form state - Updated fields
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
+    name: '',
     country: '',
-    message: ''
+    program: '',
+    subject: '',
+    mobile: ''
   })
 
   const [formErrors, setFormErrors] = useState({})
@@ -65,25 +65,16 @@ export default function Navbar() {
     }
   }
 
+  // Validate form - only mobile is required
   const validateForm = () => {
     const errors = {}
 
-    if (!formData.fullName.trim()) {
-      errors.fullName = 'Full name is required'
-    }
-
-    if (!formData.email.trim()) {
-      errors.email = 'Email is required'
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      errors.email = 'Email is invalid'
-    }
-
-    if (!formData.phone.trim()) {
-      errors.phone = 'Phone number is required'
-    }
-
-    if (!formData.country) {
-      errors.country = 'Please select a country'
+    // Only mobile number is required
+    if (!formData.mobile.trim()) {
+      errors.mobile = 'Mobile number is required'
+    } else if (!/^[\+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{3,6}[-\s\.]?[0-9]{3,6}$/.test(formData.mobile)) {
+      // Basic phone number validation - accepts international formats
+      errors.mobile = 'Please enter a valid mobile number'
     }
 
     return errors
@@ -105,19 +96,19 @@ export default function Navbar() {
       const emailBody = `
         New Enquiry from Northway Global Website
         
-        Full Name: ${formData.fullName}
-        Email: ${formData.email}
-        Phone: ${formData.phone}
-        Country: ${formData.country}
-        Message: ${formData.message || 'No message provided'}
+        ${formData.name ? `Name: ${formData.name}` : 'Name: Not provided'}
+        ${formData.country ? `Country: ${formData.country}` : 'Country: Not provided'}
+        ${formData.program ? `Program: ${formData.program}` : 'Program: Not provided'}
+        ${formData.subject ? `Subject: ${formData.subject}` : 'Subject: Not provided'}
+        Mobile: ${formData.mobile} *
         
         Submitted from: Navbar Enquiry Form
         Date: ${new Date().toLocaleString()}
       `
 
-      // Option 1: Use mailto (opens default email client)
-      // This is the simplest solution that doesn't require a backend
-      const mailtoLink = `mailto:info@northwayglobal.com?subject=New Enquiry from ${encodeURIComponent(formData.fullName)}&body=${encodeURIComponent(emailBody)}`
+      // Use mailto (opens default email client)
+      const subject = formData.name ? `New Enquiry from ${formData.name}` : 'New Enquiry from Website Visitor'
+      const mailtoLink = `mailto:info@northwayglobal.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`
 
       // Open email client
       window.location.href = mailtoLink
@@ -130,11 +121,11 @@ export default function Navbar() {
 
       // Reset form
       setFormData({
-        fullName: '',
-        email: '',
-        phone: '',
+        name: '',
         country: '',
-        message: ''
+        program: '',
+        subject: '',
+        mobile: ''
       })
 
       // Close modal after 3 seconds
@@ -159,11 +150,11 @@ export default function Navbar() {
     setFormErrors({})
     setSubmitStatus({ type: '', message: '' })
     setFormData({
-      fullName: '',
-      email: '',
-      phone: '',
+      name: '',
       country: '',
-      message: ''
+      program: '',
+      subject: '',
+      mobile: ''
     })
   }
 
@@ -266,7 +257,7 @@ export default function Navbar() {
                   { name: 'Ireland', flag: 'ie', url: '/ireland' }
                 ].map(country => (
                   <Link href={country.url} key={country.name}>
-                    <li className='px-4 py-2 hover:bg-gray-100 flex items-center gap-2 cursor-pointer'>
+                    <li className='px-4 py-2 hover:bg-[#FFF9F3] flex items-center gap-2 cursor-pointer'>
                       <img
                         src={`https://flagcdn.com/w40/${country.flag}.png`}
                         alt={country.name}
@@ -455,7 +446,7 @@ export default function Navbar() {
         </>
       )}
 
-      {/* Modal Form */}
+      {/* Modal Form - Updated with new fields */}
       {modalOpen && (
         <div className='fixed inset-0 bg-black/60 flex justify-center items-center z-50'>
           <div className='bg-white rounded-lg shadow-lg w-[90%] max-w-lg p-6 relative max-h-[90vh] overflow-y-auto'>
@@ -470,6 +461,7 @@ export default function Navbar() {
             <h2 className='text-2xl font-bold mb-4 text-gray-800'>
               Enquire Now
             </h2>
+                    
 
             {/* Status Message */}
             {submitStatus.message && (
@@ -482,56 +474,27 @@ export default function Navbar() {
             )}
 
             <form onSubmit={handleSubmit} className='space-y-4'>
+              {/* Name - Optional */}
               <div>
                 <input
                   type='text'
-                  name='fullName'
-                  value={formData.fullName}
+                  name='name'
+                  value={formData.name}
                   onChange={handleInputChange}
-                  placeholder='Full Name *'
-                  className={`w-full border ${formErrors.fullName ? 'border-red-500' : 'border-gray-300'} rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#FF9100] outline-none`}
+                  placeholder='Full Name (Optional)'
+                  className='w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#FF9100] outline-none'
                 />
-                {formErrors.fullName && (
-                  <p className='text-red-500 text-xs mt-1'>{formErrors.fullName}</p>
-                )}
               </div>
 
-              <div>
-                <input
-                  type='email'
-                  name='email'
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  placeholder='Email Address *'
-                  className={`w-full border ${formErrors.email ? 'border-red-500' : 'border-gray-300'} rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#FF9100] outline-none`}
-                />
-                {formErrors.email && (
-                  <p className='text-red-500 text-xs mt-1'>{formErrors.email}</p>
-                )}
-              </div>
-
-              <div>
-                <input
-                  type='tel'
-                  name='phone'
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  placeholder='Phone Number *'
-                  className={`w-full border ${formErrors.phone ? 'border-red-500' : 'border-gray-300'} rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#FF9100] outline-none`}
-                />
-                {formErrors.phone && (
-                  <p className='text-red-500 text-xs mt-1'>{formErrors.phone}</p>
-                )}
-              </div>
-
+              {/* Country - Optional */}
               <div>
                 <select
                   name='country'
                   value={formData.country}
                   onChange={handleInputChange}
-                  className={`w-full border ${formErrors.country ? 'border-red-500' : 'border-gray-300'} rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#FF9100] outline-none`}
+                  className='w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#FF9100] outline-none'
                 >
-                  <option value=''>Select Country *</option>
+                  <option value=''>Select Country (Optional)</option>
                   <option value='Bangladesh'>Bangladesh</option>
                   <option value='USA'>USA</option>
                   <option value='UK'>UK</option>
@@ -545,20 +508,49 @@ export default function Navbar() {
                   <option value='China'>China</option>
                   <option value='Germany'>Germany</option>
                 </select>
-                {formErrors.country && (
-                  <p className='text-red-500 text-xs mt-1'>{formErrors.country}</p>
-                )}
               </div>
 
+              {/* Program - Optional with UG, PG, PhD, Diploma options */}
               <div>
-                <textarea
-                  name='message'
-                  value={formData.message}
+                <select
+                  name='program'
+                  value={formData.program}
                   onChange={handleInputChange}
-                  placeholder='Your Message (Optional)'
-                  rows='3'
                   className='w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#FF9100] outline-none'
-                ></textarea>
+                >
+                  <option value=''>Select Program (Optional)</option>
+                  <option value='UG'>Undergraduate (UG)</option>
+                  <option value='PG'>Postgraduate (PG)</option>
+                  <option value='PhD'>PhD</option>
+                  <option value='Diploma'>Diploma</option>
+                </select>
+              </div>
+
+              {/* Subject - Optional */}
+              <div>
+                <input
+                  type='text'
+                  name='subject'
+                  value={formData.subject}
+                  onChange={handleInputChange}
+                  placeholder='Subject of Interest (Optional)'
+                  className='w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#FF9100] outline-none'
+                />
+              </div>
+
+              {/* Mobile - Required */}
+              <div>
+                <input
+                  type='tel'
+                  name='mobile'
+                  value={formData.mobile}
+                  onChange={handleInputChange}
+                  placeholder='Mobile Number *'
+                  className={`w-full border ${formErrors.mobile ? 'border-red-500' : 'border-gray-300'} rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#FF9100] outline-none`}
+                />
+                {formErrors.mobile && (
+                  <p className='text-red-500 text-xs mt-1'>{formErrors.mobile}</p>
+                )}
               </div>
 
               <button
@@ -584,7 +576,7 @@ export default function Navbar() {
             </form>
 
             <p className='text-xs text-gray-500 mt-4 text-center'>
-              * Required fields. By submitting, you agree to our privacy policy.
+              By submitting, you agree to our privacy policy.
             </p>
           </div>
         </div>
