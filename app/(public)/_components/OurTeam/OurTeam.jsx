@@ -60,7 +60,7 @@ export default function OurTeam() {
       mail: 'mehedinorthway@gmail.com'
     },
     {
-      id: 7,
+      id: 8, // Fixed duplicate id (was 7)
       name: 'Mst Esrat Jahan',
       title: 'Counsellor',
       image: '/team/esrat.png',
@@ -111,12 +111,12 @@ export default function OurTeam() {
         subtitle='Meet our amazing team members who bring everything together.'
       />
 
-      <div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 md:gap-8 my-16'>
+      <div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 my-16'>
         {teamMembers.map((member, index) => (
           <div key={`${member.id}-${index}`} className='group text-center'>
             
-            {/* Passport Size Image Container - Fixed Aspect Ratio */}
-            <div className='relative mx-auto w-full max-w-[280px]'>
+            {/* Passport Size Image Container - Removed max-width constraint */}
+            <div className='relative mx-auto w-full'>
               {/* 4:5 Aspect Ratio (Passport Size) - 1:1.25 ratio */}
               <div className='relative aspect-[4/5] rounded-xl overflow-hidden bg-gray-100 shadow-md'>
                 <img
