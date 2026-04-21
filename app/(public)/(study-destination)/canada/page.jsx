@@ -58,7 +58,7 @@ export default function page () {
       id: 1,
       tooltipText: ' Careers',
       image:
-        'https://pub-5955669eccb64965b91474a798f31ae3.r2Canada/carrers.jpg',
+        'https://pub-5955669eccb64965b91474a798f31ae3.r2.dev/uk/carrers.jpg',
       title: 'Careers ',
       colorText: '& Industry',
       description:
