@@ -43,12 +43,12 @@ export default function Sidebar() {
       {/* Logo Area */}
       <Link href="/" className="p-5 border-b border-gray-200 hover:bg-gray-50 transition">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-[#ff9100]/10 rounded-lg flex items-center justify-center overflow-hidden">
+          <div className="w-12 h-12  rounded-lg flex items-center justify-center overflow-hidden">
             <Image
               src="/logo.webp"  
               alt="Nortway Global Logo"
-              width={20}
-              height={20}
+              width={620}
+              height={620}
               className="object-contain"
             />
           </div>
