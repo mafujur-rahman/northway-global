@@ -11,15 +11,15 @@ export default function SectionHeading ({
   classNameBtn = '' 
 }) {
   return (
-    <div className={`text-center ${className}`}>
+    <div className={`text-left lg:text-center ${className}`}>
       {/* Optional button with icon */}
       {text && (
-        <div className={`flex justify-center mb-4 ${classNameBtn}`}>
+        <div className={`flex justify-start lg:justify-center mb-4 ${classNameBtn}`}>
           <button
             className={`flex items-center gap-x-2 bg-gray-100 rounded-full py-2 px-4 ${classNameBtn}`}
             data-tooltip={text}
           >
-            {Icon && <Icon className='text-base text-[#FF9100]' />}
+            {Icon && <Icon className='text-sm md:text-base text-[#FF9100]' />}
             <span className='text-sm font-semibold text-black/70'>{text}</span>
           </button>
         </div>

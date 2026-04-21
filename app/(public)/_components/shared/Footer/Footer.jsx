@@ -15,12 +15,15 @@ import BaseBtn from '../../utlities/CommonBtn/BaseBtn'
 export default function Footer() {
   // Common email for all offices
   const commonEmail = 'infonorthwaybd@gmail.com'
+  
+  // Dynamic copyright year
+  const currentYear = new Date().getFullYear()
 
   return (
     <footer className=''>
       {/* Call to Action Section - No gap on top */}
-      <div className='section__spacing bg-white py-8 md:py-12 text-center rounded-2xl'>
-        <div className='max-w-3xl mx-auto px-4'>
+      <div className='section__spacing bg-white py-8 md:py-12 text-left lg:text-center '>
+        <div className='max-w-3xl mx-auto '>
           <h2 className='text-3xl md:text-4xl font-bold text-gray-900 mb-4'>
             Ready to Start Your Journey?
           </h2>
@@ -52,7 +55,7 @@ export default function Footer() {
               />
             </div>
             <p className='text__base my-2.5'>
-              Copyright © 2026 Northway Global. All rights reserved. Let's build a beautiful tomorrow.
+              Let's build a beautiful tomorrow.
             </p>
 
             <div className='flex space-x-4'>
@@ -68,8 +71,9 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Quick Links - Moved to the right on large screens */}
+          {/* Quick Links Section with Heading */}
           <div className='lg:pl-8 xl:pl-12'>
+            <h3 className='text-lg font-semibold text-gray-900 mb-2'>Quick Links</h3>
             <ul className='space-y-1 text-base'>
               <li>
                 <a
@@ -193,8 +197,10 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className='border-t border-black/10 mt-10 pt-4 text-center text-sm font-medium text-black/70 pb-5'>
           <p>
-            Designed and Developed By{' '}
-            <span className='text-black'>Ethical Den</span>
+            Copyright © {currentYear} Northway Global. All rights reserved. Designed and Developed By{' '}
+            <a href='https://ethicalden.com' target='_blank' rel='noopener noreferrer' className='text-black hover:text-[#FF9100] transition-colors'>
+              Ethical Den
+            </a>
           </p>
         </div>
       </div>

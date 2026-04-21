@@ -14,11 +14,11 @@ import { FiMenu, FiX } from 'react-icons/fi'
 import logo from '../../../../public/logo.webp'
 import Link from 'next/link'
 
-export default function Navbar () {
+export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(null)
   const [modalOpen, setModalOpen] = useState(false)
-  
+
   // Form state
   const [formData, setFormData] = useState({
     fullName: '',
@@ -27,10 +27,24 @@ export default function Navbar () {
     country: '',
     message: ''
   })
-  
+
   const [formErrors, setFormErrors] = useState({})
   const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' })
   const [loading, setLoading] = useState(false)
+
+  // Prevent body scroll when mobile menu is open
+  React.useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [menuOpen])
 
   const toggleDropdown = menu => {
     setDropdownOpen(dropdownOpen === menu ? null : menu)
@@ -53,39 +67,39 @@ export default function Navbar () {
 
   const validateForm = () => {
     const errors = {}
-    
+
     if (!formData.fullName.trim()) {
       errors.fullName = 'Full name is required'
     }
-    
+
     if (!formData.email.trim()) {
       errors.email = 'Email is required'
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       errors.email = 'Email is invalid'
     }
-    
+
     if (!formData.phone.trim()) {
       errors.phone = 'Phone number is required'
     }
-    
+
     if (!formData.country) {
       errors.country = 'Please select a country'
     }
-    
+
     return errors
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
+
     const errors = validateForm()
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors)
       return
     }
-    
+
     setLoading(true)
-    
+
     try {
       // Create a formatted message for email
       const emailBody = `
@@ -100,20 +114,20 @@ export default function Navbar () {
         Submitted from: Navbar Enquiry Form
         Date: ${new Date().toLocaleString()}
       `
-      
+
       // Option 1: Use mailto (opens default email client)
       // This is the simplest solution that doesn't require a backend
       const mailtoLink = `mailto:info@northwayglobal.com?subject=New Enquiry from ${encodeURIComponent(formData.fullName)}&body=${encodeURIComponent(emailBody)}`
-      
+
       // Open email client
       window.location.href = mailtoLink
-      
+
       // Show success message
       setSubmitStatus({
         type: 'success',
         message: 'Thank you! Your email client will open to send your enquiry.'
       })
-      
+
       // Reset form
       setFormData({
         fullName: '',
@@ -122,13 +136,13 @@ export default function Navbar () {
         country: '',
         message: ''
       })
-      
+
       // Close modal after 3 seconds
       setTimeout(() => {
         setModalOpen(false)
         setSubmitStatus({ type: '', message: '' })
       }, 3000)
-      
+
     } catch (err) {
       console.error('Submission error:', err)
       setSubmitStatus({
@@ -139,61 +153,6 @@ export default function Navbar () {
       setLoading(false)
     }
   }
-
-  // Alternative: Submit to Google Forms (uncomment and use if preferred)
-  // const handleSubmitGoogleForms = async (e) => {
-  //   e.preventDefault()
-  //   
-  //   const errors = validateForm()
-  //   if (Object.keys(errors).length > 0) {
-  //     setFormErrors(errors)
-  //     return
-  //   }
-  //   
-  //   setLoading(true)
-  //   
-  //   try {
-  //     // Replace with your Google Form action URL and entry IDs
-  //     const formUrl = 'YOUR_GOOGLE_FORM_ACTION_URL'
-  //     const formDataObj = new FormData()
-  //     formDataObj.append('entry.123456789', formData.fullName)
-  //     formDataObj.append('entry.987654321', formData.email)
-  //     formDataObj.append('entry.555555555', formData.phone)
-  //     formDataObj.append('entry.444444444', formData.country)
-  //     formDataObj.append('entry.333333333', formData.message)
-  //     
-  //     await fetch(formUrl, {
-  //       method: 'POST',
-  //       mode: 'no-cors',
-  //       body: formDataObj
-  //     })
-  //     
-  //     setSubmitStatus({
-  //       type: 'success',
-  //       message: 'Thank you for your enquiry! We will get back to you soon.'
-  //     })
-  //     
-  //     setFormData({
-  //       fullName: '',
-  //       email: '',
-  //       phone: '',
-  //       country: '',
-  //       message: ''
-  //     })
-  //     
-  //     setTimeout(() => {
-  //       setModalOpen(false)
-  //       setSubmitStatus({ type: '', message: '' })
-  //     }, 2000)
-  //   } catch (err) {
-  //     setSubmitStatus({
-  //       type: 'error',
-  //       message: 'Failed to submit. Please try again.'
-  //     })
-  //   } finally {
-  //     setLoading(false)
-  //   }
-  // }
 
   const closeModal = () => {
     setModalOpen(false)
@@ -206,6 +165,12 @@ export default function Navbar () {
       country: '',
       message: ''
     })
+  }
+
+  // Close mobile menu when clicking on a link
+  const closeMenu = () => {
+    setMenuOpen(false)
+    setDropdownOpen(null)
   }
 
   return (
@@ -315,6 +280,10 @@ export default function Navbar () {
             </div>
           </li>
 
+          <Link href={'/service'}>
+            <li className='hover:text-[#FF9100] cursor-pointer'>Service</li>
+          </Link>
+
           {/* Gallery Dropdown */}
           <li className='relative group cursor-pointer'>
             <span className='hover:text-[#FF9100]'>Gallery ▾</span>
@@ -332,9 +301,6 @@ export default function Navbar () {
             </ul>
           </li>
 
-          <Link href={'/service'}>
-            <li className='hover:text-[#FF9100] cursor-pointer'>Service</li>
-          </Link>
           <Link href={'/blogs'}>
             <li className='hover:text-[#FF9100] cursor-pointer'>Blogs</li>
           </Link>
@@ -354,7 +320,7 @@ export default function Navbar () {
 
         {/* Mobile Menu Button */}
         <div
-          className='lg:hidden text-2xl text-gray-700'
+          className='lg:hidden text-2xl text-gray-700 z-50'
           onClick={() => setMenuOpen(!menuOpen)}
         >
           {menuOpen ? <FiX /> : <FiMenu />}
@@ -364,95 +330,135 @@ export default function Navbar () {
       {/* Spacer div */}
       <div className='h-[50px] lg:h-[98px]'></div>
 
-      {/* Mobile Dropdown Menu */}
+      {/* Mobile Menu Overlay - Fixed Position */}
       {menuOpen && (
-        <ul className='lg:hidden bg-white shadow-lg px-6 py-4 space-y-2 font-medium text-gray-700 pb-16'>
-          <div>
-            <Link href='/' onClick={() => setMenuOpen(!menuOpen)}>
-              <li>Home</li>
-            </Link>
-          </div>
-          <div>
-            <Link href='/about-us' onClick={() => setMenuOpen(!menuOpen)}>
-              <li>About Us</li>
-            </Link>
-          </div>
-          <li>
-            <button
-              onClick={() => toggleDropdown('study')}
-              className='w-full text-left'
-            >
-              Study Destination ▾
-            </button>
-            {dropdownOpen === 'study' && (
-              <ul className='grid gap-5 items-center p-5'>
-                {[
-                  { name: 'USA', flag: 'us', url: '/usa' },
-                  { name: 'UK', flag: 'gb', url: '/uk' },
-                  { name: 'Canada', flag: 'ca', url: '/canada' },
-                  { name: 'Australia', flag: 'au', url: '/australia' },
-                  { name: 'Malaysia', flag: 'my', url: '/malaysia' },
-                  { name: 'Europe', flag: 'eu', url: '/europe' },
-                  { name: 'Germany', flag: 'de', url: '/germany' },
-                  { name: 'Japan', flag: 'jp', url: '/japan' },
-                  { name: 'China', flag: 'cn', url: '/china' },
-                  { name: 'South Korea', flag: 'kr', url: '/south-korea' },
-                  { name: 'Ireland', flag: 'ie', url: '/ireland' }
-                ].map(country => (
-                  <Link href={country.url} key={country.name}>
-                    <li onClick={() => setMenuOpen(!menuOpen)} className='px-4 py-2 hover:bg-gray-100 flex items-center gap-2 cursor-pointer'>
-                      <img
-                        src={`https://flagcdn.com/w40/${country.flag}.png`}
-                        alt={country.name}
-                        className='w-6 h-5 object-cover rounded-sm'
-                      />
-                      {country.name}
-                    </li>
-                  </Link>
-                ))}
-              </ul>
-            )}
-          </li>
-          <li>
-            <button
-              onClick={() => toggleDropdown('gallery')}
-              className='w-full text-left'
-            >
-              Gallery ▾
-            </button>
-            {dropdownOpen === 'gallery' && (
-              <ul className='pl-4 mt-2 space-y-1'>
-                <Link onClick={() => setMenuOpen(!menuOpen)} href='photo-gallery'>
-                  <li>Photo Gallery</li>
+        <>
+          {/* Backdrop overlay */}
+          <div 
+            className='fixed inset-0 bg-black/50 z-40 lg:hidden'
+            onClick={closeMenu}
+          />
+          
+          {/* Mobile Menu - Fixed and Scrollable */}
+          <div className='fixed top-[70px] lg:top-[98px] left-0 right-0 bottom-0 bg-white z-40 lg:hidden overflow-y-auto'>
+            <ul className='px-4 md:px-10 py-4 space-y-1 font-medium text-gray-700'>
+              <li>
+                <Link href='/' onClick={closeMenu} className='block py-2 hover:text-[#FF9100]'>
+                  Home
                 </Link>
-                <Link onClick={() => setMenuOpen(!menuOpen)} href='video-gallery'>
-                  <li>Video Gallery</li>
+              </li>
+              <li>
+                <Link href='/about-us' onClick={closeMenu} className='block py-2 hover:text-[#FF9100]'>
+                  About Us
                 </Link>
-              </ul>
-            )}
-          </li>
-          <div>
-            <Link onClick={() => setMenuOpen(!menuOpen)} href='/service'>
-              <li>Service</li>
-            </Link>
+              </li>
+
+              {/* Study Destination Dropdown - Mobile */}
+              <li>
+                <button
+                  onClick={() => toggleDropdown('study')}
+                  className='w-full text-left py-2 hover:text-[#FF9100] flex justify-between items-center'
+                >
+                  Study Destination
+                  <span className={`transform transition-transform ${dropdownOpen === 'study' ? 'rotate-180' : ''}`}>
+                    ▾
+                  </span>
+                </button>
+                {dropdownOpen === 'study' && (
+                  <div className='pl-4 mt-2 space-y-2 border-l-2 border-[#FF9100] ml-2'>
+                    {[
+                      { name: 'USA', flag: 'us', url: '/usa' },
+                      { name: 'UK', flag: 'gb', url: '/uk' },
+                      { name: 'Canada', flag: 'ca', url: '/canada' },
+                      { name: 'Australia', flag: 'au', url: '/australia' },
+                      { name: 'Malaysia', flag: 'my', url: '/malaysia' },
+                      { name: 'Europe', flag: 'eu', url: '/europe' },
+                      { name: 'Germany', flag: 'de', url: '/germany' },
+                      { name: 'Japan', flag: 'jp', url: '/japan' },
+                      { name: 'China', flag: 'cn', url: '/china' },
+                      { name: 'South Korea', flag: 'kr', url: '/south-korea' },
+                      { name: 'Ireland', flag: 'ie', url: '/ireland' }
+                    ].map(country => (
+                      <Link href={country.url} key={country.name} onClick={closeMenu}>
+                        <li className='py-2 hover:bg-gray-50 flex items-center gap-2 cursor-pointer px-2 rounded'>
+                          <img
+                            src={`https://flagcdn.com/w40/${country.flag}.png`}
+                            alt={country.name}
+                            className='w-6 h-5 object-cover rounded-sm'
+                          />
+                          {country.name}
+                        </li>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </li>
+
+              <li>
+                <Link href='/service' onClick={closeMenu} className='block py-2 hover:text-[#FF9100]'>
+                  Service
+                </Link>
+              </li>
+
+              {/* Gallery Dropdown - Mobile */}
+              <li>
+                <button
+                  onClick={() => toggleDropdown('gallery')}
+                  className='w-full text-left py-2 hover:text-[#FF9100] flex justify-between items-center'
+                >
+                  Gallery
+                  <span className={`transform transition-transform ${dropdownOpen === 'gallery' ? 'rotate-180' : ''}`}>
+                    ▾
+                  </span>
+                </button>
+                {dropdownOpen === 'gallery' && (
+                  <div className='pl-4 mt-2 space-y-2 border-l-2 border-[#FF9100] ml-2'>
+                    <Link href='/photo-gallery' onClick={closeMenu}>
+                      <li className='py-2 hover:bg-gray-50 px-2 rounded cursor-pointer'>
+                        Photo Gallery
+                      </li>
+                    </Link>
+                    <Link href='/video-gallery' onClick={closeMenu}>
+                      <li className='py-2 hover:bg-gray-50 px-2 rounded cursor-pointer'>
+                        Video Gallery
+                      </li>
+                    </Link>
+                  </div>
+                )}
+              </li>
+
+              <li>
+                <Link href='/blogs' onClick={closeMenu} className='block py-2 hover:text-[#FF9100]'>
+                  Blogs
+                </Link>
+              </li>
+              <li>
+                <Link href='/contact-us' onClick={closeMenu} className='block py-2 hover:text-[#FF9100]'>
+                  Contact Us
+                </Link>
+              </li>
+              
+              {/* Enquiry Button in Mobile Menu */}
+              <li className='pt-4'>
+                <button
+                  onClick={() => {
+                    setModalOpen(true)
+                    closeMenu()
+                  }}
+                  className='w-full flex items-center justify-center gap-2 bg-[#ff9100] text-white font-semibold px-5 py-3 rounded-lg transition cursor-pointer'
+                >
+                  Enquire Now <FaLocationArrow />
+                </button>
+              </li>
+            </ul>
           </div>
-          <div>
-            <Link onClick={() => setMenuOpen(!menuOpen)} href='/blogs'>
-              <li>Blogs</li>
-            </Link>
-          </div>
-          <div>
-            <Link onClick={() => setMenuOpen(!menuOpen)} href='/contact-us'>
-              <li>Contact Us</li>
-            </Link>
-          </div>
-        </ul>
+        </>
       )}
 
       {/* Modal Form */}
       {modalOpen && (
         <div className='fixed inset-0 bg-black/60 flex justify-center items-center z-50'>
-          <div className='bg-white rounded-lg shadow-lg w-[90%] max-w-lg p-6 relative'>
+          <div className='bg-white rounded-lg shadow-lg w-[90%] max-w-lg p-6 relative max-h-[90vh] overflow-y-auto'>
             {/* Close Button */}
             <button
               onClick={closeModal}
@@ -464,18 +470,17 @@ export default function Navbar () {
             <h2 className='text-2xl font-bold mb-4 text-gray-800'>
               Enquire Now
             </h2>
-            
+
             {/* Status Message */}
             {submitStatus.message && (
-              <div className={`mb-4 p-3 rounded-lg ${
-                submitStatus.type === 'success' 
-                  ? 'bg-green-100 text-green-700 border border-green-300' 
-                  : 'bg-red-100 text-red-700 border border-red-300'
-              }`}>
+              <div className={`mb-4 p-3 rounded-lg ${submitStatus.type === 'success'
+                ? 'bg-green-100 text-green-700 border border-green-300'
+                : 'bg-red-100 text-red-700 border border-red-300'
+                }`}>
                 {submitStatus.message}
               </div>
             )}
-            
+
             <form onSubmit={handleSubmit} className='space-y-4'>
               <div>
                 <input
@@ -490,7 +495,7 @@ export default function Navbar () {
                   <p className='text-red-500 text-xs mt-1'>{formErrors.fullName}</p>
                 )}
               </div>
-              
+
               <div>
                 <input
                   type='email'
@@ -504,7 +509,7 @@ export default function Navbar () {
                   <p className='text-red-500 text-xs mt-1'>{formErrors.email}</p>
                 )}
               </div>
-              
+
               <div>
                 <input
                   type='tel'
@@ -518,7 +523,7 @@ export default function Navbar () {
                   <p className='text-red-500 text-xs mt-1'>{formErrors.phone}</p>
                 )}
               </div>
-              
+
               <div>
                 <select
                   name='country'
@@ -544,7 +549,7 @@ export default function Navbar () {
                   <p className='text-red-500 text-xs mt-1'>{formErrors.country}</p>
                 )}
               </div>
-              
+
               <div>
                 <textarea
                   name='message'
@@ -559,9 +564,8 @@ export default function Navbar () {
               <button
                 type='submit'
                 disabled={loading}
-                className={`w-full bg-[#FF9100] text-white font-semibold text-center justify-center items-center gap-x-1.5 inline-flex py-2 rounded-lg transition cursor-pointer ${
-                  loading ? 'opacity-70 cursor-not-allowed' : 'hover:bg-[#e68200]'
-                }`}
+                className={`w-full bg-[#FF9100] text-white font-semibold text-center justify-center items-center gap-x-1.5 inline-flex py-2 rounded-lg transition cursor-pointer ${loading ? 'opacity-70 cursor-not-allowed' : 'hover:bg-[#e68200]'
+                  }`}
               >
                 {loading ? (
                   <>
@@ -578,7 +582,7 @@ export default function Navbar () {
                 )}
               </button>
             </form>
-            
+
             <p className='text-xs text-gray-500 mt-4 text-center'>
               * Required fields. By submitting, you agree to our privacy policy.
             </p>

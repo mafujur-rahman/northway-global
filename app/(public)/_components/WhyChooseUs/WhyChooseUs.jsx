@@ -32,8 +32,8 @@ export default function WhyChooseUs() {
     ]
 
     return (
-        <div className='bg-[#FFF9F3] py-20'>
-            <div className='container mx-auto px-4'>
+        <div className='bg-[#FFF9F3] section__spacing'>
+            <div className='container mx-auto  py-20'>
                 <SectionHeading
                     text='Why Choose'
                     Icon={FaStar}

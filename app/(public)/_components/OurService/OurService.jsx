@@ -63,7 +63,7 @@ export default function OurService() {
 
   return (
     <div className='section__spacing bg-[#FFF9F3]'>
-      <div className='py-20 container mx-auto px-4'>
+      <div className='py-20 container mx-auto'>
         <SectionHeading
           text='Service'
           Icon={MdOutlineLocalOffer}

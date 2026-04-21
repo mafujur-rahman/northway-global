@@ -21,7 +21,7 @@
 }
 
 .banner__title {
-  @apply text-5xl md:text-6xl xl:text-7xl font-bold text-black/80;
+  @apply text-5xl md:text-6xl xl:text-7xl font-bold text-white;
 }
 .banner__color__title {
   @apply text-[#ff9100];
@@ -73,7 +73,7 @@
 /* components-> CTA style */
 
 .ct__container {
-  @apply bg-[url("https://pub-5955669eccb64965b91474a798f31ae3.r2.dev/others/CTA.webp")] bg-cover bg-top bg-no-repeat py-16 opacity-90  text-center h-[80vh]  text-white;
+  @apply bg-[url("https://pub-5955669eccb64965b91474a798f31ae3.r2.dev/others/CTA.webp")] bg-cover bg-top bg-no-repeat py-16 opacity-90 text-left lg:text-center h-[80vh]  text-white;
 }
 
 .ct__parent {
