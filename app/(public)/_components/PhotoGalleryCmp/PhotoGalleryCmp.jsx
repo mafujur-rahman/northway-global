@@ -97,6 +97,13 @@ export default function PhotoGalleryCmp() {
 
   return (
     <div className='section__spacing'>
+      <div className='text-center mb-8'>
+        <h2 className='text-3xl font-bold text-gray-800 mb-2'>Photo Gallery</h2>
+        <p className='text-gray-600'>Explore our collection of memorable moments</p>
+        {totalCount > 0 && (
+          <p className='text-sm text-gray-500 mt-2'>{totalCount} beautiful memories</p>
+        )}
+      </div>
 
       {images.length === 0 ? (
         <div className='text-center py-12 rounded-lg'>

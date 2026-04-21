@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useAuth } from '../Context/AuthContext';
+import Image from 'next/image';
 
 
 export default function LoginForm() {
@@ -16,7 +17,7 @@ export default function LoginForm() {
     setLoading(true);
 
     const result = await login(username, password);
-    
+
     if (!result.success) {
       setError(result.message);
     }
@@ -29,10 +30,14 @@ export default function LoginForm() {
         {/* Logo/Icon Area */}
         <div className="text-center">
           <div className="flex justify-center mb-4">
-            <div className="w-16 h-16 bg-[#ff9100] rounded-full flex items-center justify-center">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
+            <div className="w-32 h-32  rounded-full flex items-center justify-center overflow-hidden">
+              <Image
+                src="/logo.webp" 
+                alt="Nortway Global Logo"
+                width={940}
+                height={940}
+                className="object-contain"
+              />
             </div>
           </div>
           <h2 className="text-2xl font-bold text-gray-900">Nortway Global</h2>
@@ -93,7 +98,7 @@ export default function LoginForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2.5 bg-[#ff9100] text-white font-semibold rounded-lg hover:bg-[#e68200] focus:outline-none focus:ring-2 focus:ring-[#ff9100] focus:ring-offset-2 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-2.5 bg-[#ff9100] text-white font-semibold rounded-lg hover:bg-[#e68200] focus:outline-none focus:ring-2 focus:ring-[#ff9100] focus:ring-offset-2 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             {loading ? (
               <span className="flex items-center justify-center">
@@ -109,13 +114,6 @@ export default function LoginForm() {
           </button>
         </form>
 
-        {/* Demo Credentials */}
-        <div className="pt-4 border-t border-gray-200">
-          <div className="text-center text-xs text-gray-500 space-y-1">
-            <p className="font-medium text-gray-700">Demo Credentials:</p>
-            <p>Username: <span className="text-[#ff9100] font-mono">ethical</span> | Password: <span className="text-[#ff9100] font-mono">den</span></p>
-          </div>
-        </div>
       </div>
     </div>
   );

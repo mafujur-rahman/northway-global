@@ -2,15 +2,16 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { 
-  FaBlog, 
-  FaRegImage, 
-  FaVideo, 
-  FaQuoteRight, 
+import {
+  FaBlog,
+  FaRegImage,
+  FaVideo,
+  FaQuoteRight,
   FaTachometerAlt,
-  FaSignOutAlt 
+  FaSignOutAlt
 } from 'react-icons/fa';
 import { useAuth } from '../../../Context/AuthContext';
+import Image from 'next/image';
 
 
 export default function Sidebar() {
@@ -42,8 +43,14 @@ export default function Sidebar() {
       {/* Logo Area */}
       <Link href="/" className="p-5 border-b border-gray-200 hover:bg-gray-50 transition">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-[#ff9100] rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-lg">N</span>
+          <div className="w-8 h-8 bg-[#ff9100]/10 rounded-lg flex items-center justify-center overflow-hidden">
+            <Image
+              src="/logo.webp"  
+              alt="Nortway Global Logo"
+              width={20}
+              height={20}
+              className="object-contain"
+            />
           </div>
           <span className="font-semibold text-gray-900 text-lg">Nortway Global</span>
         </div>
@@ -56,11 +63,10 @@ export default function Sidebar() {
             <li key={item.id}>
               <Link
                 href={item.path}
-                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 ${
-                  isActive(item.path)
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 ${isActive(item.path)
                     ? 'bg-[#ff9100] text-white'
                     : 'text-gray-700 hover:bg-gray-100'
-                }`}
+                  }`}
               >
                 <span className="text-lg">{item.icon}</span>
                 <span className="text-sm font-medium">{item.label}</span>
