@@ -12,7 +12,7 @@ import {
 import { SiVisa } from 'react-icons/si'
 
 const applicationProcess = [
-  { id: 1, title: 'Clients profile review', icon: <FaUserCheck size={28} /> },
+  { id: 1, title: 'Student profile review', icon: <FaUserCheck size={28} /> },
   { id: 2, title: 'Onboarding meeting', icon: <FaUsers size={28} /> },
   { id: 3, title: 'University search', icon: <FaSearch size={28} /> },
   { id: 4, title: 'Statement of purpose', icon: <FaFileAlt size={28} /> },

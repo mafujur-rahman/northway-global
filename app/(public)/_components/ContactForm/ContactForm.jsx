@@ -16,7 +16,7 @@ export default function ContactForm() {
       id: 1,
       name: "Bangladesh",
       flag: "https://pub-5955669eccb64965b91474a798f31ae3.r2.dev/flags/bangladesh.webp",
-      email: "infonorthwaybd@gmail.com",
+      email: "info@northwayglobal.com.bd",
       phone: "+880 01771660030",
       address: "kha-12/2, Shahjadpur (near USA embassy), Gulshan, Dhaka-1212"
     },
@@ -24,7 +24,7 @@ export default function ContactForm() {
       id: 2,
       name: "USA",
       flag: "https://pub-5955669eccb64965b91474a798f31ae3.r2.dev/flags/America.webp",
-      email: "infonorthwaybd@gmail.com",
+      email: "info@northwayglobal.com.bd",
       phone: "+1 202-555-0188",
       address: "1234 Broadway, New York, USA"
     },
@@ -32,7 +32,7 @@ export default function ContactForm() {
       id: 3,
       name: "Australia",
       flag: "https://pub-5955669eccb64965b91474a798f31ae3.r2.dev/flags/au.jpg",
-      email: "infonorthwaybd@gmail.com",
+      email: "info@northwayglobal.com.bd",
       phone: "+61 2 5550 1234",
       address: "56 King Street, Sydney, Australia"
     }

@@ -14,7 +14,7 @@ import BaseBtn from '../../utlities/CommonBtn/BaseBtn'
 
 export default function Footer() {
   // Common email for all offices
-  const commonEmail = 'infonorthwaybd@gmail.com'
+  const commonEmail = 'info@northwayglobal.com.bd'
   
   // Dynamic copyright year
   const currentYear = new Date().getFullYear()
