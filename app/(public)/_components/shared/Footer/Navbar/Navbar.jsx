@@ -481,7 +481,7 @@ export default function Navbar() {
                   name='name'
                   value={formData.name}
                   onChange={handleInputChange}
-                  placeholder='Full Name (Optional)'
+                  placeholder='Full Name'
                   className='w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#FF9100] outline-none'
                 />
               </div>
@@ -494,7 +494,7 @@ export default function Navbar() {
                   onChange={handleInputChange}
                   className='w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#FF9100] outline-none'
                 >
-                  <option value=''>Select Country (Optional)</option>
+                  <option value=''>Select Country</option>
                   <option value='Bangladesh'>Bangladesh</option>
                   <option value='USA'>USA</option>
                   <option value='UK'>UK</option>
@@ -518,7 +518,7 @@ export default function Navbar() {
                   onChange={handleInputChange}
                   className='w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#FF9100] outline-none'
                 >
-                  <option value=''>Select Program (Optional)</option>
+                  <option value=''>Select Program</option>
                   <option value='UG'>Undergraduate (UG)</option>
                   <option value='PG'>Postgraduate (PG)</option>
                   <option value='PhD'>PhD</option>
@@ -533,7 +533,7 @@ export default function Navbar() {
                   name='subject'
                   value={formData.subject}
                   onChange={handleInputChange}
-                  placeholder='Subject of Interest (Optional)'
+                  placeholder='Subject of Interest'
                   className='w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#FF9100] outline-none'
                 />
               </div>
@@ -545,7 +545,7 @@ export default function Navbar() {
                   name='mobile'
                   value={formData.mobile}
                   onChange={handleInputChange}
-                  placeholder='Mobile Number *'
+                  placeholder='Mobile Number'
                   className={`w-full border ${formErrors.mobile ? 'border-red-500' : 'border-gray-300'} rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#FF9100] outline-none`}
                 />
                 {formErrors.mobile && (

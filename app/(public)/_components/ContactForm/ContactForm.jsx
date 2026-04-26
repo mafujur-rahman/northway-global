@@ -38,11 +38,13 @@ export default function ContactForm() {
     }
   ];
 
-  // Form state
+  // Form state with inquiry fields + message
   const [formData, setFormData] = useState({
     name: '',
-    email: '',
     country: 'Bangladesh',
+    program: '',
+    subject: '',
+    mobile: '',
     message: ''
   });
   
@@ -69,13 +71,12 @@ export default function ContactForm() {
   const validateForm = () => {
     const newErrors = {};
     if (!formData.name.trim()) newErrors.name = 'Name is required';
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
-    }
     if (!formData.country.trim()) newErrors.country = 'Country is required';
-    if (!formData.message.trim()) newErrors.message = 'Message is required';
+    if (!formData.mobile.trim()) {
+      newErrors.mobile = 'Mobile number is required';
+    } else if (!/^[0-9+\-\s()]+$/.test(formData.mobile)) {
+      newErrors.mobile = 'Please enter a valid mobile number';
+    }
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -90,13 +91,14 @@ export default function ContactForm() {
     setLoading(true);
     
     try {
-      // Using Contact Us API endpoint
       const response = await axios.post(
         'https://nortway.mrshakil.com/api/contact/contact-us/',
         {
           name: formData.name,
-          email: formData.email,
           country: formData.country,
+          program: formData.program,
+          subject: formData.subject,
+          mobile: formData.mobile,
           message: formData.message
         }
       );
@@ -116,8 +118,10 @@ export default function ContactForm() {
         // Reset form
         setFormData({
           name: '',
-          email: '',
           country: selectedOffice.name,
+          program: '',
+          subject: '',
+          mobile: '',
           message: ''
         });
         setErrors({});
@@ -176,34 +180,23 @@ export default function ContactForm() {
         {/* Contact Form */}
         <div className='lg:col-span-8 order-2 md:order-1'>
           <form onSubmit={handleSubmit} className='bg-white p-5 lg:p-10 rounded-lg space-y-5'>
+            {/* Name */}
             <div>
-              <label className='cf__label'>Name <span className='text-red-500'>*</span></label>
+              <label className='cf__label'>Full Name</label>
               <input 
                 type='text' 
                 name='name'
                 value={formData.name}
                 onChange={handleChange}
-                placeholder='Type Your Name' 
+                placeholder='Type Your Full Name' 
                 className={`cf__input ${errors.name ? 'border-red-500' : ''}`}
               />
               {errors.name && <p className='text-red-500 text-xs mt-1'>{errors.name}</p>}
             </div>
 
+            {/* Country */}
             <div>
-              <label className='cf__label'>Email <span className='text-red-500'>*</span></label>
-              <input 
-                type='email'
-                name='email'
-                value={formData.email}
-                onChange={handleChange}
-                className={`cf__input ${errors.email ? 'border-red-500' : ''}`}
-                placeholder='Type Your Email'
-              />
-              {errors.email && <p className='text-red-500 text-xs mt-1'>{errors.email}</p>}
-            </div>
-
-            <div>
-              <label className='cf__label'>Country <span className='text-red-500'>*</span></label>
+              <label className='cf__label'>Country</label>
               <input
                 className={`cf__input ${errors.country ? 'border-red-500' : ''}`}
                 type='text'
@@ -215,21 +208,65 @@ export default function ContactForm() {
               {errors.country && <p className='text-red-500 text-xs mt-1'>{errors.country}</p>}
             </div>
 
+            {/* Program */}
             <div>
-              <label className='cf__label'>Message <span className='text-red-500'>*</span></label>
+              <label className='cf__label'>Program</label>
+              <select
+                name='program'
+                value={formData.program}
+                onChange={handleChange}
+                className='cf__input'
+              >
+                <option value=''>Select Program</option>
+                <option value='UG'>Undergraduate (UG)</option>
+                <option value='PG'>Postgraduate (PG)</option>
+                <option value='PhD'>PhD</option>
+                <option value='Diploma'>Diploma</option>
+              </select>
+            </div>
+
+            {/* Subject */}
+            <div>
+              <label className='cf__label'>Subject of Interest</label>
+              <input
+                type='text'
+                name='subject'
+                value={formData.subject}
+                onChange={handleChange}
+                placeholder='Subject of Interest'
+                className='cf__input'
+              />
+            </div>
+
+            {/* Mobile */}
+            <div>
+              <label className='cf__label'>Mobile Number</label>
+              <input
+                type='tel'
+                name='mobile'
+                value={formData.mobile}
+                onChange={handleChange}
+                placeholder='Mobile Number'
+                className={`cf__input ${errors.mobile ? 'border-red-500' : ''}`}
+              />
+              {errors.mobile && <p className='text-red-500 text-xs mt-1'>{errors.mobile}</p>}
+            </div>
+
+            {/* Message */}
+            <div>
+              <label className='cf__label'>Message</label>
               <textarea 
-                className={`cf__input ${errors.message ? 'border-red-500' : ''}`}
+                className='cf__input'
                 name='message'
                 value={formData.message}
                 onChange={handleChange}
-                rows={5} 
+                rows={4} 
                 placeholder='Type Your Message'
               />
-              {errors.message && <p className='text-red-500 text-xs mt-1'>{errors.message}</p>}
             </div>
 
             <BaseBtn 
-              text={loading ? 'Sending...' : 'Submit'} 
+              text={loading ? 'Sending...' : 'Send Message'} 
               icon={MdArrowOutward}
               disabled={loading}
             />
