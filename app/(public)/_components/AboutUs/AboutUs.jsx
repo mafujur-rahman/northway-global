@@ -113,11 +113,11 @@ export default function AboutUs({ heading, btnLink, colorText }) {
                 >
                   <h3 
                     ref={el => numbersRef.current[i] = el}
-                    className='text-xl font-bold text-black/80'
+                    className='text-xl font-bold text-[#FF9100]'
                   >
                     0{stat.number.includes('+') ? '+' : stat.number.includes('%') ? '%' : ''}
                   </h3>
-                  <p className='text-gray-500'>{stat.label}</p>
+                  <p className='text-black'>{stat.label}</p>
                 </div>
               ))}
             </div>

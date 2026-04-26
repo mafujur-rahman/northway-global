@@ -23,7 +23,7 @@ const BlogFormModal = ({ isOpen, onClose, onSubmit, initialData, isLoading, edit
     const [preview, setPreview] = useState({ thumbnail: null, pdf: null });
     const [errors, setErrors] = useState({});
     const editorRef = useRef(null);
-    
+
     // Use ref for content to avoid re-renders
     const contentRef = useRef('');
     const isTypingRef = useRef(false);
@@ -65,7 +65,7 @@ const BlogFormModal = ({ isOpen, onClose, onSubmit, initialData, isLoading, edit
         // Prevent re-renders
         zIndex: 10001,
         events: {
-            beforePaste: function(event) {
+            beforePaste: function (event) {
                 return true;
             }
         }
@@ -77,7 +77,7 @@ const BlogFormModal = ({ isOpen, onClose, onSubmit, initialData, isLoading, edit
             const initialContent = initialData?.content || '';
             contentRef.current = initialContent;
             isTypingRef.current = false;
-            
+
             setFormData({
                 title: initialData?.title || '',
                 writer: initialData?.writer || '',
@@ -86,7 +86,7 @@ const BlogFormModal = ({ isOpen, onClose, onSubmit, initialData, isLoading, edit
                 pdf_file: null,
                 thumbnail: null
             });
-            
+
             if (initialData?.thumbnail) {
                 setPreview(prev => ({ ...prev, thumbnail: initialData.thumbnail }));
             } else {
@@ -118,12 +118,12 @@ const BlogFormModal = ({ isOpen, onClose, onSubmit, initialData, isLoading, edit
         // Update ref immediately
         contentRef.current = newContent;
         isTypingRef.current = true;
-        
+
         // Clear previous timeout
         if (typingTimeoutRef.current) {
             clearTimeout(typingTimeoutRef.current);
         }
-        
+
         // Only update state after user stops typing
         typingTimeoutRef.current = setTimeout(() => {
             if (isTypingRef.current) {
@@ -134,7 +134,7 @@ const BlogFormModal = ({ isOpen, onClose, onSubmit, initialData, isLoading, edit
                     return prev;
                 });
                 isTypingRef.current = false;
-                
+
                 if (errors.content) {
                     setErrors(prev => ({ ...prev, content: '' }));
                 }
@@ -147,7 +147,7 @@ const BlogFormModal = ({ isOpen, onClose, onSubmit, initialData, isLoading, edit
         if (typingTimeoutRef.current) {
             clearTimeout(typingTimeoutRef.current);
         }
-        
+
         if (contentRef.current !== formData.content) {
             setFormData(prev => ({ ...prev, content: contentRef.current }));
         }
@@ -179,31 +179,31 @@ const BlogFormModal = ({ isOpen, onClose, onSubmit, initialData, isLoading, edit
         if (!formData.writer.trim()) newErrors.writer = 'Writer name is required';
         if (!formData.short_summary.trim()) newErrors.short_summary = 'Short summary is required';
         if (!formData.content.trim()) newErrors.content = 'Content is required';
-        
+
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
+
         // Make sure we have the latest content
         const finalContent = contentRef.current || formData.content;
-        
+
         if (validateForm()) {
             const submitData = new FormData();
             submitData.append('title', formData.title);
             submitData.append('writer', formData.writer);
             submitData.append('short_summary', formData.short_summary);
             submitData.append('content', finalContent);
-            
+
             if (formData.thumbnail && formData.thumbnail instanceof File) {
                 submitData.append('thumbnail', formData.thumbnail);
             }
             if (formData.pdf_file && formData.pdf_file instanceof File) {
                 submitData.append('pdf_file', formData.pdf_file);
             }
-            
+
             onSubmit(submitData);
         }
     };
@@ -213,8 +213,8 @@ const BlogFormModal = ({ isOpen, onClose, onSubmit, initialData, isLoading, edit
     return (
         <div className="fixed inset-0 z-[9999] overflow-y-auto">
             <div className="flex items-center justify-center min-h-screen px-4 py-8">
-                <div 
-                    className="fixed inset-0 backdrop-blur-md bg-white/30" 
+                <div
+                    className="fixed inset-0 backdrop-blur-md bg-white/30"
                     onClick={onClose}
                 ></div>
 
@@ -361,8 +361,8 @@ const DeleteConfirmationModal = ({ isOpen, onClose, onConfirm, blog }) => {
     return (
         <div className="fixed inset-0 z-[9999] overflow-y-auto">
             <div className="flex items-center justify-center min-h-screen px-4">
-                <div 
-                    className="fixed inset-0 backdrop-blur-md bg-white/30" 
+                <div
+                    className="fixed inset-0 backdrop-blur-md bg-white/30"
                     onClick={onClose}
                 ></div>
 
@@ -401,7 +401,7 @@ const DeleteConfirmationModal = ({ isOpen, onClose, onConfirm, blog }) => {
 // Component to display HTML content safely
 const BlogContent = ({ content }) => {
     return (
-        <div 
+        <div
             className="blog-content prose prose-sm max-w-none"
             dangerouslySetInnerHTML={{ __html: content }}
         />
@@ -433,7 +433,7 @@ export default function BlogsPage() {
         try {
             const token = getAuthToken();
             const response = await axios.get(
-                `https://nortway.mrshakil.com/api/blogs/?page=${page}&page_size=${itemsPerPage}`,
+                `https://api.northwayglobal.com.bd/api/blogs/?page=${page}&page_size=${itemsPerPage}`,
                 { headers: { 'Authorization': `Token ${token}` } }
             );
             if (response.data.success) {
@@ -461,14 +461,14 @@ export default function BlogsPage() {
             const config = {
                 headers: { 'Authorization': `Token ${token}`, 'Content-Type': 'multipart/form-data' }
             };
-            
+
             let response;
             if (editingBlog) {
-                response = await axios.put(`https://nortway.mrshakil.com/api/blogs/${editingBlog.id}/`, submitData, config);
+                response = await axios.put(`https://api.northwayglobal.com.bd/api/blogs/${editingBlog.id}/`, submitData, config);
             } else {
-                response = await axios.post('https://nortway.mrshakil.com/api/blogs/', submitData, config);
+                response = await axios.post('https://api.northwayglobal.com.bd/api/blogs/', submitData, config);
             }
-            
+
             if (response.data.success) {
                 Swal.fire({
                     icon: 'success',
@@ -498,7 +498,7 @@ export default function BlogsPage() {
         if (!deleteModal.blog) return;
         try {
             const token = getAuthToken();
-            const response = await axios.delete(`https://nortway.mrshakil.com/api/blogs/${deleteModal.blog.id}/`, {
+            const response = await axios.delete(`https://api.northwayglobal.com.bd/api/blogs/${deleteModal.blog.id}/`, {
                 headers: { 'Authorization': `Token ${token}` }
             });
             if (response.data.success) {
@@ -562,7 +562,7 @@ export default function BlogsPage() {
                     <table className="w-full">
                         <thead className="bg-gray-50 border-b border-gray-200">
                             <tr className="text-left">
-                                <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">SL</th>
                                 <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Thumbnail</th>
                                 <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
                                 <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Writer</th>
@@ -579,9 +579,11 @@ export default function BlogsPage() {
                                     </td>
                                 </tr>
                             ) : (
-                                blogs.map((blog) => (
+                                blogs.slice((currentPage - 1) * 10, currentPage * 10).map((blog, index) => (
                                     <tr key={blog.id} className="hover:bg-gray-50 transition">
-                                        <td className="px-4 py-3 text-sm text-gray-900">{blog.id}</td>
+                                        <td className="px-4 py-3 text-sm text-gray-900">
+                                            {(currentPage - 1) * 10 + index + 1}
+                                        </td>
                                         <td className="px-4 py-3">
                                             {blog.thumbnail ? (
                                                 <img src={blog.thumbnail} alt={blog.title} className="w-12 h-12 object-cover rounded" />
@@ -593,7 +595,7 @@ export default function BlogsPage() {
                                         </td>
                                         <td className="px-4 py-3">
                                             <div className="max-w-xs">
-                                                <button 
+                                                <button
                                                     onClick={() => handleViewBlog(blog)}
                                                     className="text-sm font-medium text-gray-900 truncate hover:text-[#ff9100] hover:underline text-left"
                                                 >
@@ -630,28 +632,43 @@ export default function BlogsPage() {
                     </table>
                 </div>
 
-                {totalPages > 1 && (
+                {Math.ceil(blogs.length / 10) > 1 && (
                     <div className="px-4 py-3 border-t border-gray-200 flex items-center justify-between flex-wrap gap-2">
-                        <div className="text-sm text-gray-500">Showing {blogs.length} of {totalCount} blogs</div>
+                        <div className="text-sm text-gray-500">
+                            Showing {Math.min(blogs.length, currentPage * 10)} of {blogs.length} blogs
+                        </div>
                         <div className="flex items-center gap-2">
-                            <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className="px-3 py-1 text-sm border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition">
+                            <button
+                                onClick={() => handlePageChange(currentPage - 1)}
+                                disabled={currentPage === 1}
+                                className="px-3 py-1 text-sm border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition"
+                            >
                                 Previous
                             </button>
                             <div className="flex items-center gap-1">
-                                {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                                {Array.from({ length: Math.min(5, Math.ceil(blogs.length / 10)) }, (_, i) => {
                                     let pageNum;
+                                    const totalPages = Math.ceil(blogs.length / 10);
                                     if (totalPages <= 5) pageNum = i + 1;
                                     else if (currentPage <= 3) pageNum = i + 1;
                                     else if (currentPage >= totalPages - 2) pageNum = totalPages - 4 + i;
                                     else pageNum = currentPage - 2 + i;
                                     return (
-                                        <button key={pageNum} onClick={() => handlePageChange(pageNum)} className={`px-3 py-1 text-sm rounded-md transition ${currentPage === pageNum ? 'bg-[#ff9100] text-white' : 'border border-gray-300 hover:bg-gray-50'}`}>
+                                        <button
+                                            key={pageNum}
+                                            onClick={() => handlePageChange(pageNum)}
+                                            className={`px-3 py-1 text-sm rounded-md transition ${currentPage === pageNum ? 'bg-[#ff9100] text-white' : 'border border-gray-300 hover:bg-gray-50'}`}
+                                        >
                                             {pageNum}
                                         </button>
                                     );
                                 })}
                             </div>
-                            <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className="px-3 py-1 text-sm border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition">
+                            <button
+                                onClick={() => handlePageChange(currentPage + 1)}
+                                disabled={currentPage === Math.ceil(blogs.length / 10)}
+                                className="px-3 py-1 text-sm border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition"
+                            >
                                 Next
                             </button>
                         </div>
@@ -668,8 +685,8 @@ export default function BlogsPage() {
         return (
             <div className="fixed inset-0 z-[9999] overflow-y-auto">
                 <div className="flex items-center justify-center min-h-screen px-4 py-8">
-                    <div 
-                        className="fixed inset-0 backdrop-blur-md bg-white/30" 
+                    <div
+                        className="fixed inset-0 backdrop-blur-md bg-white/30"
                         onClick={onClose}
                     ></div>
 
@@ -687,7 +704,7 @@ export default function BlogsPage() {
                                     <img src={blog.thumbnail} alt={blog.title} className="w-full max-h-96 object-cover rounded-lg" />
                                 </div>
                             )}
-                            
+
                             <div className="mb-4 flex items-center justify-between flex-wrap gap-2">
                                 <div>
                                     <p className="text-sm text-gray-600">Writer: <span className="font-medium">{blog.writer}</span></p>
@@ -699,12 +716,12 @@ export default function BlogsPage() {
                                     </a>
                                 )}
                             </div>
-                            
+
                             <div className="mb-4 p-4 bg-gray-50 rounded-lg">
                                 <h4 className="text-sm font-semibold text-gray-700 mb-2">Short Summary</h4>
                                 <p className="text-gray-600">{blog.short_summary}</p>
                             </div>
-                            
+
                             <div>
                                 <h4 className="text-sm font-semibold text-gray-700 mb-2">Full Content</h4>
                                 <div className="blog-content prose prose-sm max-w-none">

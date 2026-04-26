@@ -28,7 +28,7 @@ export default function BlogDetailsPage({ params }) {
         console.log('Fetching blog with ID:', id);
         
         const response = await axios.get(
-          `https://nortway.mrshakil.com/api/blogs/${id}/`,
+          `https://api.northwayglobal.com.bd/api/blogs/${id}/`,
           { 
             headers: { 
               'Authorization': `Token ${token}`,

@@ -9,10 +9,11 @@ import {
   FaVideo, 
   FaQuoteRight, 
   FaArrowUp,
-  FaArrowDown
+  FaArrowDown,
+  FaChevronLeft,
+  FaChevronRight
 } from 'react-icons/fa';
 import DashboardLayout from '../page';
-
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -22,10 +23,15 @@ export default function DashboardPage() {
     videos: 0,
     testimonials: 0
   });
-  const [recentBlogs, setRecentBlogs] = useState([]);
-  const [recentTestimonials, setRecentTestimonials] = useState([]);
+  const [allBlogs, setAllBlogs] = useState([]);
+  const [allTestimonials, setAllTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  // Pagination states
+  const [blogCurrentPage, setBlogCurrentPage] = useState(1);
+  const [testimonialCurrentPage, setTestimonialCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const getAuthToken = () => localStorage.getItem('auth_token');
 
@@ -41,10 +47,10 @@ export default function DashboardPage() {
         
         // Fetch all data in parallel
         const [blogsRes, photosRes, videosRes, testimonialsRes] = await Promise.all([
-          axios.get('https://nortway.mrshakil.com/api/blogs/', headers),
-          axios.get('https://nortway.mrshakil.com/api/gallery/photos/', headers),
-          axios.get('https://nortway.mrshakil.com/api/gallery/videos/', headers),
-          axios.get('https://nortway.mrshakil.com/api/testimonial/', headers)
+          axios.get('https://api.northwayglobal.com.bd/api/blogs/', headers),
+          axios.get('https://api.northwayglobal.com.bd/api/gallery/photos/', headers),
+          axios.get('https://api.northwayglobal.com.bd/api/gallery/videos/', headers),
+          axios.get('https://api.northwayglobal.com.bd/api/testimonial/', headers)
         ]);
         
         // Set stats
@@ -55,9 +61,9 @@ export default function DashboardPage() {
           testimonials: testimonialsRes.data.count || 0
         });
         
-        // Set recent data (first 4 items for blogs, first 3 for testimonials)
-        setRecentBlogs(blogsRes.data.data?.slice(0, 4) || []);
-        setRecentTestimonials(testimonialsRes.data.data?.slice(0, 3) || []);
+        // Set all data
+        setAllBlogs(blogsRes.data.data || []);
+        setAllTestimonials(testimonialsRes.data.data || []);
         
       } catch (err) {
         console.error('Error fetching dashboard data:', err);
@@ -69,6 +75,91 @@ export default function DashboardPage() {
     
     fetchDashboardData();
   }, []);
+
+  // Pagination calculations
+  const getPaginatedData = (data, currentPage) => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return data.slice(startIndex, endIndex);
+  };
+
+  const blogTotalPages = Math.ceil(allBlogs.length / itemsPerPage);
+  const testimonialTotalPages = Math.ceil(allTestimonials.length / itemsPerPage);
+
+  const currentBlogs = getPaginatedData(allBlogs, blogCurrentPage);
+  const currentTestimonials = getPaginatedData(allTestimonials, testimonialCurrentPage);
+
+  const handleBlogPageChange = (page) => {
+    setBlogCurrentPage(page);
+  };
+
+  const handleTestimonialPageChange = (page) => {
+    setTestimonialCurrentPage(page);
+  };
+
+  // Pagination Component
+  const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+    if (totalPages <= 1) return null;
+
+    const getPageNumbers = () => {
+      const pages = [];
+      const maxVisible = 5;
+      
+      if (totalPages <= maxVisible) {
+        for (let i = 1; i <= totalPages; i++) pages.push(i);
+      } else {
+        if (currentPage <= 3) {
+          for (let i = 1; i <= 5; i++) pages.push(i);
+        } else if (currentPage >= totalPages - 2) {
+          for (let i = totalPages - 4; i <= totalPages; i++) pages.push(i);
+        } else {
+          for (let i = currentPage - 2; i <= currentPage + 2; i++) pages.push(i);
+        }
+      }
+      return pages;
+    };
+
+    return (
+      <div className="flex items-center justify-between px-4 py-3 bg-gray-50 border-t border-gray-200">
+        <div className="text-sm text-gray-500">
+          Showing {((currentPage - 1) * itemsPerPage) + 1} to{' '}
+          {Math.min(currentPage * itemsPerPage, totalPages * itemsPerPage)} of{' '}
+          {totalPages * itemsPerPage} items
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => onPageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="p-2 border border-gray-300 rounded-md hover:bg-gray-100 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <FaChevronLeft className="text-xs" />
+          </button>
+          
+          {getPageNumbers().map(pageNum => (
+            <button
+              key={pageNum}
+              onClick={() => onPageChange(pageNum)}
+              className={`px-3 py-1 text-sm rounded-md transition ${
+                currentPage === pageNum
+                  ? 'bg-[#ff9100] text-white'
+                  : 'border border-gray-300 hover:bg-gray-100'
+              }`}
+            >
+              {pageNum}
+            </button>
+          ))}
+          
+          <button
+            onClick={() => onPageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="p-2 border border-gray-300 rounded-md hover:bg-gray-100 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <FaChevronRight className="text-xs" />
+          </button>
+        </div>
+      </div>
+    );
+  };
 
   // Navigation handlers
   const navigateTo = (path) => {
@@ -221,7 +312,7 @@ export default function DashboardPage() {
         {/* Recent Activity Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Recent Blogs */}
-          <div className="bg-white rounded-lg border border-gray-200">
+          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
             <div className="p-5 border-b border-gray-200">
               <div className="flex justify-between items-center">
                 <h3 className="text-lg font-semibold text-gray-900">Recent Blog Posts</h3>
@@ -233,14 +324,18 @@ export default function DashboardPage() {
                 </button>
               </div>
             </div>
-            <div className="divide-y divide-gray-100">
-              {recentBlogs.length === 0 ? (
+            <div className="divide-y divide-gray-100 max-h-[600px] overflow-y-auto">
+              {currentBlogs.length === 0 ? (
                 <div className="p-8 text-center text-gray-500">
                   No blog posts yet. Create your first blog!
                 </div>
               ) : (
-                recentBlogs.map((blog) => (
-                  <div key={blog.id} className="p-4 hover:bg-gray-50 transition cursor-pointer">
+                currentBlogs.map((blog) => (
+                  <div 
+                    key={blog.id} 
+                    className="p-4 hover:bg-gray-50 transition cursor-pointer animate-fade-in-up"
+                    style={{ animationDelay: `${Math.random() * 0.1}s` }}
+                  >
                     <div className="flex items-start gap-3">
                       {blog.thumbnail ? (
                         <img 
@@ -268,10 +363,17 @@ export default function DashboardPage() {
                 ))
               )}
             </div>
+            {blogTotalPages > 1 && (
+              <Pagination 
+                currentPage={blogCurrentPage}
+                totalPages={blogTotalPages}
+                onPageChange={handleBlogPageChange}
+              />
+            )}
           </div>
 
           {/* Recent Testimonials */}
-          <div className="bg-white rounded-lg border border-gray-200">
+          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
             <div className="p-5 border-b border-gray-200">
               <div className="flex justify-between items-center">
                 <h3 className="text-lg font-semibold text-gray-900">Recent Testimonials</h3>
@@ -283,14 +385,18 @@ export default function DashboardPage() {
                 </button>
               </div>
             </div>
-            <div className="divide-y divide-gray-100">
-              {recentTestimonials.length === 0 ? (
+            <div className="divide-y divide-gray-100 max-h-[600px] overflow-y-auto">
+              {currentTestimonials.length === 0 ? (
                 <div className="p-8 text-center text-gray-500">
                   No testimonials yet. Add your first testimonial!
                 </div>
               ) : (
-                recentTestimonials.map((testimonial) => (
-                  <div key={testimonial.id} className="p-4 hover:bg-gray-50 transition cursor-pointer">
+                currentTestimonials.map((testimonial) => (
+                  <div 
+                    key={testimonial.id} 
+                    className="p-4 hover:bg-gray-50 transition cursor-pointer animate-fade-in-up"
+                    style={{ animationDelay: `${Math.random() * 0.1}s` }}
+                  >
                     <div className="flex items-start gap-3">
                       {testimonial.profile_image ? (
                         <img 
@@ -319,6 +425,13 @@ export default function DashboardPage() {
                 ))
               )}
             </div>
+            {testimonialTotalPages > 1 && (
+              <Pagination 
+                currentPage={testimonialCurrentPage}
+                totalPages={testimonialTotalPages}
+                onPageChange={handleTestimonialPageChange}
+              />
+            )}
           </div>
         </div>
 
@@ -361,6 +474,24 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+
+      {/* Animation styles */}
+      <style jsx>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .animate-fade-in-up {
+          animation: fadeInUp 0.3s ease-out forwards;
+        }
+      `}</style>
     </DashboardLayout>
   );
 }

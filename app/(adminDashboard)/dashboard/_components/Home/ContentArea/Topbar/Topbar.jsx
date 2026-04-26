@@ -52,7 +52,7 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
     try {
       const token = getAuthToken();
       const response = await axios.post(
-        'https://nortway.mrshakil.com/api/auth/change-password/',
+        'https://api.northwayglobal.com.bd/api/auth/change-password/',
         {
           old_password: passwordData.old_password,
           new_password: passwordData.new_password,
@@ -322,20 +322,20 @@ export default function Topbar() {
         {/* Right side - Search & User */}
         <div className="flex items-center gap-4">
           {/* Search Bar */}
-          <div className="relative">
+          {/* <div className="relative">
             <input
               type="text"
               placeholder="Search..."
               className="w-64 pl-9 pr-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff9100] focus:border-transparent"
             />
             <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
-          </div>
+          </div> */}
 
           {/* Notification Bell */}
-          <button className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition">
+          {/* <button className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition">
             <FaBell className="text-lg" />
             <span className="absolute top-1 right-1 w-2 h-2 bg-[#ff9100] rounded-full"></span>
-          </button>
+          </button> */}
 
           {/* User Profile */}
           <div className="relative">

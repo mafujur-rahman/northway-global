@@ -92,7 +92,7 @@ export default function ContactForm() {
     
     try {
       const response = await axios.post(
-        'https://nortway.mrshakil.com/api/contact/contact-us/',
+        'https://api.northwayglobal.com.bd/api/contact/contact-us/',
         {
           name: formData.name,
           country: formData.country,

@@ -230,7 +230,7 @@ export default function ImagesPage() {
         try {
             const token = getAuthToken();
             const response = await axios.get(
-                `https://nortway.mrshakil.com/api/gallery/photos/?page=${page}&page_size=${itemsPerPage}`,
+                `https://api.northwayglobal.com.bd/api/gallery/photos/?page=${page}&page_size=${itemsPerPage}`,
                 { headers: { 'Authorization': `Token ${token}` } }
             );
             if (response.data.success) {
@@ -266,14 +266,14 @@ export default function ImagesPage() {
             if (editingImage) {
                 // Update existing image using PUT method
                 response = await axios.put(
-                    `https://nortway.mrshakil.com/api/gallery/photos/${editingImage.id}/`,
+                    `https://api.northwayglobal.com.bd/api/gallery/photos/${editingImage.id}/`,
                     submitData,
                     { headers: { 'Authorization': `Token ${token}`, 'Content-Type': 'multipart/form-data' } }
                 );
             } else {
                 // Create new image
                 response = await axios.post(
-                    'https://nortway.mrshakil.com/api/gallery/photos/',
+                    'https://api.northwayglobal.com.bd/api/gallery/photos/',
                     submitData,
                     { headers: { 'Authorization': `Token ${token}`, 'Content-Type': 'multipart/form-data' } }
                 );
@@ -316,7 +316,7 @@ export default function ImagesPage() {
         try {
             const token = getAuthToken();
             const response = await axios.delete(
-                `https://nortway.mrshakil.com/api/gallery/photos/${deleteModal.image.id}/`,
+                `https://api.northwayglobal.com.bd/api/gallery/photos/${deleteModal.image.id}/`,
                 { headers: { 'Authorization': `Token ${token}` } }
             );
             

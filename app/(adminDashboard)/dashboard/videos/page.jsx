@@ -232,7 +232,7 @@ export default function VideosPage() {
         try {
             const token = getAuthToken();
             const response = await axios.get(
-                `https://nortway.mrshakil.com/api/gallery/videos/?page=${page}&page_size=${itemsPerPage}`,
+                `https://api.northwayglobal.com.bd/api/gallery/videos/?page=${page}&page_size=${itemsPerPage}`,
                 { headers: { 'Authorization': `Token ${token}` } }
             );
             if (response.data.success) {
@@ -268,14 +268,14 @@ export default function VideosPage() {
             if (editingVideo) {
                 // Update existing video using PUT method
                 response = await axios.put(
-                    `https://nortway.mrshakil.com/api/gallery/videos/${editingVideo.id}/`,
+                    `https://api.northwayglobal.com.bd/api/gallery/videos/${editingVideo.id}/`,
                     formData,
                     { headers: { 'Authorization': `Token ${token}`, 'Content-Type': 'application/json' } }
                 );
             } else {
                 // Create new video
                 response = await axios.post(
-                    'https://nortway.mrshakil.com/api/gallery/videos/',
+                    'https://api.northwayglobal.com.bd/api/gallery/videos/',
                     formData,
                     { headers: { 'Authorization': `Token ${token}`, 'Content-Type': 'application/json' } }
                 );
@@ -318,7 +318,7 @@ export default function VideosPage() {
         try {
             const token = getAuthToken();
             const response = await axios.delete(
-                `https://nortway.mrshakil.com/api/gallery/videos/${deleteModal.video.id}/`,
+                `https://api.northwayglobal.com.bd/api/gallery/videos/${deleteModal.video.id}/`,
                 { headers: { 'Authorization': `Token ${token}` } }
             );
             

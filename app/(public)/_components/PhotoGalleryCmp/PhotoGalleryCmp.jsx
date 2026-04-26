@@ -22,7 +22,7 @@ export default function PhotoGalleryCmp() {
       try {
         const token = getAuthToken();
         const response = await axios.get(
-          'https://nortway.mrshakil.com/api/gallery/photos/',
+          'https://api.northwayglobal.com.bd/api/gallery/photos/',
         );
         
         console.log('Gallery API Response:', response.data);

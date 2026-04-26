@@ -41,18 +41,17 @@ export default function Sidebar() {
   return (
     <aside className="fixed left-0 top-0 h-full w-64 bg-white border-r border-gray-200 flex flex-col z-20">
       {/* Logo Area */}
-      <Link href="/" className="p-5 border-b border-gray-200 hover:bg-gray-50 transition">
-        <div className="flex items-center gap-2">
-          <div className="w-12 h-12  rounded-lg flex items-center justify-center overflow-hidden">
+      <Link href="/" className="p-5 border-b border-gray-200 hover:bg-gray-50 transition block">
+        <div className="w-full">
+          <div className="w-full rounded-lg flex items-center justify-center overflow-hidden px-5">
             <Image
-              src="/logo.webp"  
+              src="/logo.webp"
               alt="Nortway Global Logo"
               width={620}
               height={620}
-              className="object-contain"
+              className="object-contain w-full h-auto"
             />
           </div>
-          <span className="font-semibold text-gray-900 text-lg">Nortway Global</span>
         </div>
       </Link>
 
@@ -64,8 +63,8 @@ export default function Sidebar() {
               <Link
                 href={item.path}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 ${isActive(item.path)
-                    ? 'bg-[#ff9100] text-white'
-                    : 'text-gray-700 hover:bg-gray-100'
+                  ? 'bg-[#ff9100] text-white'
+                  : 'text-gray-700 hover:bg-gray-100'
                   }`}
               >
                 <span className="text-lg">{item.icon}</span>

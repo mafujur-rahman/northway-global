@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (username, password) => {
         try {
-            const response = await axios.post('https://nortway.mrshakil.com/api/auth/login/', {
+            const response = await axios.post('https://api.northwayglobal.com.bd/api/auth/login/', {
                 username,
                 password
             });
@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            await axios.get('https://nortway.mrshakil.com/api/auth/logout/');
+            await axios.get('https://api.northwayglobal.com.bd/api/auth/logout/');
         } catch (error) {
             console.error('Logout error:', error);
         } finally {

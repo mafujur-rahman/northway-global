@@ -307,7 +307,7 @@ export default function TestimonialsPage() {
         try {
             const token = getAuthToken();
             const response = await axios.get(
-                `https://nortway.mrshakil.com/api/testimonial/?page=${page}&page_size=${itemsPerPage}`,
+                `https://api.northwayglobal.com.bd/api/testimonial/?page=${page}&page_size=${itemsPerPage}`,
                 { headers: { 'Authorization': `Token ${token}` } }
             );
             if (response.data.success) {
@@ -343,14 +343,14 @@ export default function TestimonialsPage() {
             if (editingTestimonial) {
                 // Update existing testimonial using PUT method
                 response = await axios.put(
-                    `https://nortway.mrshakil.com/api/testimonial/${editingTestimonial.id}/`,
+                    `https://api.northwayglobal.com.bd/api/testimonial/${editingTestimonial.id}/`,
                     submitData,
                     { headers: { 'Authorization': `Token ${token}`, 'Content-Type': 'multipart/form-data' } }
                 );
             } else {
                 // Create new testimonial
                 response = await axios.post(
-                    'https://nortway.mrshakil.com/api/testimonial/',
+                    'https://api.northwayglobal.com.bd/api/testimonial/',
                     submitData,
                     { headers: { 'Authorization': `Token ${token}`, 'Content-Type': 'multipart/form-data' } }
                 );
@@ -393,7 +393,7 @@ export default function TestimonialsPage() {
         try {
             const token = getAuthToken();
             const response = await axios.delete(
-                `https://nortway.mrshakil.com/api/testimonial/${deleteModal.testimonial.id}/`,
+                `https://api.northwayglobal.com.bd/api/testimonial/${deleteModal.testimonial.id}/`,
                 { headers: { 'Authorization': `Token ${token}` } }
             );
             
