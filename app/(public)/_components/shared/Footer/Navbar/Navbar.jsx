@@ -10,6 +10,7 @@ import {
 } from 'react-icons/fa'
 import { FaLocationArrow } from 'react-icons/fa6'
 import { FiMenu, FiX } from 'react-icons/fi'
+import toast, { Toaster } from 'react-hot-toast'
 
 import logo from '../../../../public/logo.webp'
 import Link from 'next/link'
@@ -29,7 +30,6 @@ export default function Navbar() {
   })
 
   const [formErrors, setFormErrors] = useState({})
-  const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' })
   const [loading, setLoading] = useState(false)
 
   // Prevent body scroll when mobile menu is open
@@ -92,54 +92,47 @@ export default function Navbar() {
     setLoading(true)
 
     try {
-      // Create a formatted message for email
-      const emailBody = `
-        New Enquiry from Northway Global Website
-        
-        ${formData.name ? `Name: ${formData.name}` : 'Name: Not provided'}
-        ${formData.country ? `Country: ${formData.country}` : 'Country: Not provided'}
-        ${formData.program ? `Program: ${formData.program}` : 'Program: Not provided'}
-        ${formData.subject ? `Subject: ${formData.subject}` : 'Subject: Not provided'}
-        Mobile: ${formData.mobile} *
-        
-        Submitted from: Navbar Enquiry Form
-        Date: ${new Date().toLocaleString()}
-      `
-
-      // Use mailto (opens default email client)
-      const subject = formData.name ? `New Enquiry from ${formData.name}` : 'New Enquiry from Website Visitor'
-      const mailtoLink = `mailto:info@northwayglobal.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`
-
-      // Open email client
-      window.location.href = mailtoLink
-
-      // Show success message
-      setSubmitStatus({
-        type: 'success',
-        message: 'Thank you! Your email client will open to send your enquiry.'
+      // API call to submit enquiry
+      const response = await fetch('https://api.northwayglobal.com.bd/api/contact/enquiry/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
       })
 
-      // Reset form
-      setFormData({
-        name: '',
-        country: '',
-        program: '',
-        subject: '',
-        mobile: ''
-      })
-
-      // Close modal after 3 seconds
-      setTimeout(() => {
-        setModalOpen(false)
-        setSubmitStatus({ type: '', message: '' })
-      }, 3000)
-
+      if (response.ok) {
+        const data = await response.json()
+        console.log('Enquiry submitted successfully:', data)
+        
+        // Show success toast
+        toast.success('Enquiry submitted successfully! We will contact you soon.', {
+          duration: 4000,
+          position: 'top-center',
+        })
+        
+        // Reset form
+        setFormData({
+          name: '',
+          country: '',
+          program: '',
+          subject: '',
+          mobile: ''
+        })
+        
+        // Close modal after 2 seconds
+        setTimeout(() => {
+          setModalOpen(false)
+          setFormErrors({})
+        }, 2000)
+      } else {
+        const errorData = await response.json()
+        console.error('API Error:', errorData)
+        toast.error('Failed to submit enquiry. Please try again later.')
+      }
     } catch (err) {
       console.error('Submission error:', err)
-      setSubmitStatus({
-        type: 'error',
-        message: 'Failed to submit. Please contact us directly at info@northwayglobal.com'
-      })
+      toast.error('Network error. Please check your connection and try again.')
     } finally {
       setLoading(false)
     }
@@ -148,7 +141,6 @@ export default function Navbar() {
   const closeModal = () => {
     setModalOpen(false)
     setFormErrors({})
-    setSubmitStatus({ type: '', message: '' })
     setFormData({
       name: '',
       country: '',
@@ -166,6 +158,9 @@ export default function Navbar() {
 
   return (
     <div>
+      {/* Toaster component for toast notifications */}
+      <Toaster />
+
       {/* Topbar - Fixed */}
       <div className='hidden lg:block fixed top-0 left-0 right-0 z-40'>
         <div className='grid grid-cols-[80%__20%] xl:grid-cols-[75%__25%] items-center justify-between w-full py-3 px-6 md:px-10 xl:px-20 bg-[#FEDDB1]'>
@@ -461,17 +456,6 @@ export default function Navbar() {
             <h2 className='text-2xl font-bold mb-4 text-gray-800'>
               Enquire Now
             </h2>
-                    
-
-            {/* Status Message */}
-            {submitStatus.message && (
-              <div className={`mb-4 p-3 rounded-lg ${submitStatus.type === 'success'
-                ? 'bg-green-100 text-green-700 border border-green-300'
-                : 'bg-red-100 text-red-700 border border-red-300'
-                }`}>
-                {submitStatus.message}
-              </div>
-            )}
 
             <form onSubmit={handleSubmit} className='space-y-4'>
               {/* Name - Optional */}
@@ -545,7 +529,7 @@ export default function Navbar() {
                   name='mobile'
                   value={formData.mobile}
                   onChange={handleInputChange}
-                  placeholder='Mobile Number'
+                  placeholder='Mobile Number *'
                   className={`w-full border ${formErrors.mobile ? 'border-red-500' : 'border-gray-300'} rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#FF9100] outline-none`}
                 />
                 {formErrors.mobile && (
