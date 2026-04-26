@@ -529,7 +529,7 @@ export default function Navbar() {
                   name='mobile'
                   value={formData.mobile}
                   onChange={handleInputChange}
-                  placeholder='Mobile Number *'
+                  placeholder='Mobile Number'
                   className={`w-full border ${formErrors.mobile ? 'border-red-500' : 'border-gray-300'} rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#FF9100] outline-none`}
                 />
                 {formErrors.mobile && (
