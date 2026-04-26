@@ -51,7 +51,7 @@ export default function ApplicationProcess() {
         {/* Desktop View - Auto scroll only when needed */}
         <div className='hidden md:block w-full '>
           <div className='overflow-x-auto overflow-y-hidden pb-4 custom-scrollbar'>
-            <div className='flex flex-row items-stretch gap-2 justify-center '>
+            <div className='flex flex-row items-stretch gap-2 justify-start 2xl:justify-center '>
               {/* Logo Card */}
               <div className='flex-shrink-0 w-[150px]'>
                 <div className='bg-white rounded-xl p-3 text-center h-full flex flex-col shadow-sm hover:shadow-md transition-shadow items-center justify-center'>
